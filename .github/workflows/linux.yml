@@ -38,17 +38,20 @@ jobs:
         curl -LO "https://wii.leseratte10.de/devkitPro/libnds/libnds_1.3.1/libnds-1.3.1.tar.bz2"
         7z x libnds-1.3.1.tar.bz2
         7z x libnds-1.3.1.tar
-        make install
+        rm libnds-1.3.1.tar.bz2
+        rm libnds-1.3.1.tar
         cd ../
-        rm -rf downg-libnds
+        # rm -rf ${DEVKITPRO}/libnds
+        mv downg-libnds ${DEVKITPRO}/libnds
         
         mkdir downg-libfat
         cd downg-libfat
         curl -LO "https://wii.leseratte10.de/devkitPro/libfat/libfat_1.0.7%20(2010)/libfat-nds-1.0.7.tar.bz2"
         7z x libfat-nds-1.0.7.tar.bz2
         7z x libfat-nds-1.0.7.tar
-        make install
-        cd ../
-        rm -rf downg-libfat
+        rm libfat-nds-1.0.7.tar.bz2
+        rm libfat-nds-1.0.7.tar
+        mv * ${DEVKITPRO}/libnds
+        
     - name: make
       run: make
