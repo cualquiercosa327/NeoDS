@@ -15,8 +15,8 @@ jobs:
     - name: Download 7Zip
       run: |
         Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900.exe -OutFile 7z1900.exe
-        start 7z1900.exe
+        .\7z1900.exe
     - name: Download DevKitPro Tools
       run: |
         Invoke-WebRequest -Uri "https://wii.leseratte10.de/devkitPro/devkitARM/r20%20(2007)/devkitARM_r20-win32.exe" -OutFile devkitARM_r20-win32.exe
-        start devkitARM_r20-win32.exe
+        .\devkitARM_r20-win32.exe
