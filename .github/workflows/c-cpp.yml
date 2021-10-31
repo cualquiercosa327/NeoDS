@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: DKP Leseratte10 archive runs
 
 on:
   push:
