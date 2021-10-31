@@ -51,7 +51,8 @@ jobs:
         7z x libfat-nds-1.0.7.tar
         rm libfat-nds-1.0.7.tar.bz2
         rm libfat-nds-1.0.7.tar
-        mv * ${DEVKITPRO}/libnds
-        
+        mv include/fat.h ${DEVKITPRO}/libnds/include/fat.h
+        mv lib/libfat.a ${DEVKITPRO}/libnds/lib/libfat.a
+
     - name: make
       run: make
