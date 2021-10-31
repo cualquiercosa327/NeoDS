@@ -1,0 +1,54 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container: devkitpro/devkitarm
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v1
+    - name: Update System
+      run: |
+        sudo apt-get update
+        sudo apt-get install p7zip-full python -y
+    - name: downgrade devkitpro stuff
+      run: |
+        mkdir downg-devkitarm
+        cd downg-devkitarm
+        curl -LO "https://wii.leseratte10.de/devkitPro/devkitARM/r21%20(2007)/14943_devkitARM_r21linux.tar.bz2"
+        7z x 14943_devkitARM_r21linux.tar.bz2
+        7z x 14943_devkitARM_r21linux.tar
+        rm 14943_devkitARM_r21linux.tar.bz2
+        rm 14943_devkitARM_r21linux.tar
+        cd ../
+        mv downg-devkitarm ~/devkitARM
+
+        export DEVKITARM=~/devkitARM
+
+        mkdir downg-libnds
+        cd downg-libnds
+        curl -LO "https://wii.leseratte10.de/devkitPro/libnds/libnds_1.3.1/libnds-1.3.1.tar.bz2"
+        7z x libnds-1.3.1.tar.bz2
+        7z x libnds-1.3.1.tar
+        make install
+        cd ../
+        rm -rf downg-libnds
+        
+        mkdir downg-libfat
+        cd downg-libfat
+        curl -LO "https://wii.leseratte10.de/devkitPro/libfat/libfat_1.0.7%20(2010)/libfat-nds-1.0.7.tar.bz2"
+        7z x libfat-nds-1.0.7.tar.bz2
+        7z x libfat-nds-1.0.7.tar
+        make install
+        cd ../
+        rm -rf downg-libfat
+    - name: make
+      run: make
