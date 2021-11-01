@@ -50,6 +50,7 @@ jobs:
         export PATH=$PATH:${DEVKITPRO}/tools/bin:$DEVKITARM/bin
         echo $PATH
         ls ${DEVKITARM}/bin
+        chmod +x ${DEVKITARM}/bin/arm-eabi-gcc
         ${DEVKITARM}/bin/arm-eabi-gcc --help
 
         make
