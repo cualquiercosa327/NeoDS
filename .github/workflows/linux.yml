@@ -24,15 +24,8 @@ jobs:
         mkdir downg-devkitarm
         cd downg-devkitarm
         curl -LO "https://wii.leseratte10.de/devkitPro/devkitARM/r21%20(2007)/14943_devkitARM_r21linux.tar.bz2"
-        7z x 14943_devkitARM_r21linux.tar.bz2
-        7z x 14943_devkitARM_r21linux.tar
-        rm 14943_devkitARM_r21linux.tar.bz2
-        rm 14943_devkitARM_r21linux.tar
-        cd ../
-        mv downg-devkitarm ~/devkitARM
-
-        export DEVKITARM=~/devkitARM
-        printenv DEVKITARM
+        rm -rf $DEVKITARM
+        tar xvjf 14943_devkitARM_r21linux.tar.bz2 -C $DEVKITPRO
 
         mkdir downg-libnds
         cd downg-libnds
