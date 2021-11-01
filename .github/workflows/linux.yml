@@ -32,6 +32,7 @@ jobs:
         mv downg-devkitarm ~/devkitARM
 
         export DEVKITARM=~/devkitARM
+        printenv DEVKITARM
 
         mkdir downg-libnds
         cd downg-libnds
