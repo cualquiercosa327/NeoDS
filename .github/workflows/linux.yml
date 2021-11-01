@@ -21,6 +21,16 @@ jobs:
         sudo apt-get install python -y
     - name: downgrade devkitpro stuff
       run: |
+        export DEVKITPRO=/opt/devkitpro
+        export DEVKITARM=${DEVKITPRO}/devkitARM
+        export PORTLIBS_ROOT=${DEVKITPRO}/portlibs
+        export PATH=${DEVKITPRO}/tools/bin:$DEVKITARM/bin:$PATH
+        export TOOL_PREFIX=arm-eabi-
+        export CC=${TOOL_PREFIX}gcc
+        export CXX=${TOOL_PREFIX}g++
+        export AR=${TOOL_PREFIX}gcc-ar
+        export RANLIB=${TOOL_PREFIX}gcc-ranlib
+        
         curl -LO "https://wii.leseratte10.de/devkitPro/devkitARM/r21%20(2007)/14943_devkitARM_r21linux.tar.bz2"
         rm -rf $DEVKITARM
         tar xvjf 14943_devkitARM_r21linux.tar.bz2 -C $DEVKITPRO
