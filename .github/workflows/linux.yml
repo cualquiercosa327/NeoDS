@@ -49,4 +49,5 @@ jobs:
         export RANLIB=${TOOL_PREFIX}gcc-ranlibmake
         
         ls $DEVKITARM/bin
+        echo PATH
         make
