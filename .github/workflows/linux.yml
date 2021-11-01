@@ -48,6 +48,7 @@ jobs:
         export AR=${TOOL_PREFIX}gcc-ar
         export RANLIB=${TOOL_PREFIX}gcc-ranlibmake
         
+        arm-eabi-gcc --help
         ls $DEVKITARM/bin
         echo $PATH
         make
