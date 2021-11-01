@@ -18,31 +18,23 @@ jobs:
     - name: Update System
       run: |
         sudo apt-get update
-        sudo apt-get install p7zip-full python -y
+        sudo apt-get install python -y
     - name: downgrade devkitpro stuff
       run: |
-        mkdir downg-devkitarm
-        cd downg-devkitarm
         curl -LO "https://wii.leseratte10.de/devkitPro/devkitARM/r21%20(2007)/14943_devkitARM_r21linux.tar.bz2"
         rm -rf $DEVKITARM
         tar xvjf 14943_devkitARM_r21linux.tar.bz2 -C $DEVKITPRO
 
-        mkdir downg-libnds
-        cd downg-libnds
         curl -LO "https://wii.leseratte10.de/devkitPro/libnds/libnds_1.3.1/libnds-1.3.1.tar.bz2"
         rm -rf $DEVKITPRO/libnds
         mkdir $DEVKITPRO/libnds
         tar xvjf libnds-1.3.1.tar.bz2 -C $DEVKITPRO/libnds
-        
-        mkdir downg-libfat
-        cd downg-libfat
+
         curl -LO "https://wii.leseratte10.de/devkitPro/libfat/libfat_1.0.7%20(2010)/libfat-nds-1.0.7.tar.bz2"
-        7z x libfat-nds-1.0.7.tar.bz2
-        7z x libfat-nds-1.0.7.tar
+        tar xvjf libfat-nds-1.0.7.tar.bz2 -C $DEVKITPRO/libnds
         rm libfat-nds-1.0.7.tar.bz2
-        rm libfat-nds-1.0.7.tar
-        mv include/fat.h $DEVKITPRO/libnds/include/fat.h
-        mv lib/libfat.a $DEVKITPRO/libnds/lib/libfat.a
+        rm 14943_devkitARM_r21linux.tar.bz2
+        rm libnds-1.3.1.tar.bz2
 
     - name: make
       run: make
