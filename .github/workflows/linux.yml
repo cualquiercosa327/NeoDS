@@ -38,4 +38,4 @@ jobs:
         
     - name: make
       run: |
-        PATH=$(pwd)/devkitpro/tools/bin:$(pwd)/devkitpro/devkitarm/bin:$PATH DEVKITARM=$(pwd)/devkitpro/devkitARM DEVKITPRO=$(pwd)/devkitpro make
+        PATH=/opt/devkitpro/tools/bin:/opt/devkitpro/devkitarm/bin:$PATH DEVKITARM=/opt/devkitpro/devkitARM DEVKITPRO=/opt/devkitpro make
