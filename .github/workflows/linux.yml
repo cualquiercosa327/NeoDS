@@ -49,7 +49,7 @@ jobs:
 
         export PATH=$PATH:${DEVKITPRO}/tools/bin:$DEVKITARM/bin
         echo $PATH
-        ls $DEVKITARM/bin
-        /opt/devkitpro/devkitARM/bin/arm-eabi-gcc --help
+        ls ${DEVKITARM}/bin
+        ${DEVKITARM}/bin/arm-eabi-gcc --help
 
         make
