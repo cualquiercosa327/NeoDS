@@ -50,28 +50,10 @@ $(TARGET).arm9	: arm9/$(TARGET).elf
 
 #---------------------------------------------------------------------------------
 arm7/$(TARGET).elf:
-	export DEVKITPRO=/opt/devkitpro
-        export DEVKITARM=${DEVKITPRO}/devkitARM
-        export PORTLIBS_ROOT=${DEVKITPRO}/portlibs
-        export PATH=${DEVKITPRO}/tools/bin:$DEVKITARM/bin:$PATH
-        export TOOL_PREFIX=arm-eabi-
-        export CC=${TOOL_PREFIX}gcc
-        export CXX=${TOOL_PREFIX}g++
-        export AR=${TOOL_PREFIX}gcc-ar
-        export RANLIB=${TOOL_PREFIX}gcc-ranlibmake
 	$(MAKE) -C arm7
 	
 #---------------------------------------------------------------------------------
 arm9/$(TARGET).elf:
-	export DEVKITPRO=/opt/devkitpro
-        export DEVKITARM=${DEVKITPRO}/devkitARM
-        export PORTLIBS_ROOT=${DEVKITPRO}/portlibs
-        export PATH=${DEVKITPRO}/tools/bin:$DEVKITARM/bin:$PATH
-        export TOOL_PREFIX=arm-eabi-
-        export CC=${TOOL_PREFIX}gcc
-        export CXX=${TOOL_PREFIX}g++
-        export AR=${TOOL_PREFIX}gcc-ar
-        export RANLIB=${TOOL_PREFIX}gcc-ranlibmake
 	$(MAKE) -C arm9
 
 #---------------------------------------------------------------------------------
