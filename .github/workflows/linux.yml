@@ -36,13 +36,9 @@ jobs:
         mkdir downg-libnds
         cd downg-libnds
         curl -LO "https://wii.leseratte10.de/devkitPro/libnds/libnds_1.3.1/libnds-1.3.1.tar.bz2"
-        7z x libnds-1.3.1.tar.bz2
-        7z x libnds-1.3.1.tar
-        rm libnds-1.3.1.tar.bz2
-        rm libnds-1.3.1.tar
-        cd ../
-        # rm -rf $DEVKITPRO/libnds
-        mv downg-libnds $DEVKITPRO/libnds
+        rm -rf $DEVKITPRO/libnds
+        mkdir $DEVKITPRO/libnds
+        tar xvjf libnds-1.3.1.tar.bz2 -C $DEVKITPRO/libnds
         
         mkdir downg-libfat
         cd downg-libfat
