@@ -36,9 +36,6 @@ jobs:
         rm 14943_devkitARM_r21linux.tar.bz2
         rm libnds-1.3.1.tar.bz2
         
-        cd $DEVKITARM/bin
-        ls
-
     - name: make
       run: |
         export DEVKITPRO=/opt/devkitpro
@@ -51,4 +48,5 @@ jobs:
         export AR=${TOOL_PREFIX}gcc-ar
         export RANLIB=${TOOL_PREFIX}gcc-ranlibmake
         
+        ls $DEVKITARM/bin
         make
