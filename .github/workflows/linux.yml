@@ -50,6 +50,9 @@ jobs:
         export PATH=$PATH:${DEVKITPRO}/tools/bin:$DEVKITARM/bin
         echo $PATH
         ls ${DEVKITARM}/bin
+        
+        [ ! -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does not exist."
+        [ -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does indeed exist."
         chmod +x ${DEVKITARM}/bin/arm-eabi-gcc
         ${DEVKITARM}/bin/arm-eabi-gcc --help
 
