@@ -38,4 +38,16 @@ jobs:
         
     - name: make
       run: |
-        PATH=/opt/devkitpro/tools/bin:/opt/devkitpro/devkitarm/bin:$PATH DEVKITARM=/opt/devkitpro/devkitARM DEVKITPRO=/opt/devkitpro make
+        export DEVKITPRO=/opt/devkitpro
+        export DEVKITARM=${DEVKITPRO}/devkitARM
+        export PORTLIBS_ROOT=${DEVKITPRO}/portlibs
+        export PATH=${DEVKITPRO}/tools/bin:$DEVKITARM/bin:$PATH
+        export TOOL_PREFIX=arm-eabi-
+        export CC=${TOOL_PREFIX}gcc
+        export CXX=${TOOL_PREFIX}g++
+        export AR=${TOOL_PREFIX}gcc-ar
+        export RANLIB=${TOOL_PREFIX}gcc-ranlibmake
+        
+        ls $DEVKITARM/bin
+        echo $PATH
+        make
