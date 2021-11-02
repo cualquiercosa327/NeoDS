@@ -57,7 +57,7 @@ jobs:
         [ -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does indeed exist."
 
         echo "SETTING PERMS"
-        chmod -R 777 ${DEVKITARM}/bin
+        chmod -R 777 ${DEVKITPRO}
 
         echo "STARTING PERM CHECK"
         echo "[ls on DKA/bin printed below]"
