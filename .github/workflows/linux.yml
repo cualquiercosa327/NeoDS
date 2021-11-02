@@ -49,12 +49,15 @@ jobs:
 
         export PATH=$PATH:${DEVKITPRO}/tools/bin:$DEVKITARM/bin
         
-        echo "[$PATH printed below]"
+        echo "[PATH printed below]"
         echo $PATH
 
         echo "Checking status on arm-eabi-gcc"
         [ ! -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does not exist."
         [ -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does indeed exist."
+
+        echo "SETTING PERMS"
+        chmod -R 777 ${DEVKITARM}/bin
 
         echo "STARTING PERM CHECK"
         echo "[ls on DKA/bin printed below]"
