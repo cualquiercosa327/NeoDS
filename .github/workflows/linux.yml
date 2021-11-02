@@ -48,12 +48,25 @@ jobs:
         export RANLIB=${TOOL_PREFIX}gcc-ranlibmake
 
         export PATH=$PATH:${DEVKITPRO}/tools/bin:$DEVKITARM/bin
-        echo $PATH
-        ls ${DEVKITARM}/bin
         
+        echo "[$PATH printed below]"
+        echo $PATH
+
+        echo "Checking status on arm-eabi-gcc"
         [ ! -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does not exist."
         [ -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does indeed exist."
+
+        echo "STARTING PERM CHECK"
+        echo "[ls on DKA/bin printed below]"
+        ls -l ${DEVKITARM}/bin
+        echo "[stat on DKA/bin printed below]"
+        stat ${DEVKITARM}/bin
+        echo "[stat on arm-eabi-gcc printed below]"
+        stat ${DEVKITARM}/bin/arm-eabi-gcc
+
         chmod +x ${DEVKITARM}/bin/arm-eabi-gcc
+        echo "[attempt to run help command]"
         ${DEVKITARM}/bin/arm-eabi-gcc --help
 
+        echo "[attempt to run make command]"
         make
