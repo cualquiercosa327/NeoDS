@@ -129,7 +129,7 @@ bool systemInit()
 {
 	irqInit();
 	irqSet(IRQ_TIMER0, timer0Intr);
-	irqEnable(IRQ_VBLANK | IRQ_VCOUNT | IRQ_TIMER0 | IRQ_IPC_SYNC | IRQ_DMA3);
+	irqEnable(IRQ_TIMER0);
 
 	TIMER_DATA(0) = TIMER_FREQ_1024(1000);
 	TIMER_CR(0) = TIMER_DIV_1024 | TIMER_ENABLE | TIMER_IRQ_REQ;
