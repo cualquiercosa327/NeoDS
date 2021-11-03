@@ -141,7 +141,7 @@ void neoSpriteInit()
 	g_frameCount = 0;
 
 	//allocate texture memory to cpu
-	u32 banks = vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_LCD, VRAM_D_LCD);
+	u32 banks = vramSetPrimaryBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_LCD, VRAM_D_LCD);
 	
 	//load initial sprite cache
 	for(i = 0; i < SPRITE_CACHE_COUNT; i++) {
@@ -160,7 +160,7 @@ void neoSpriteInit()
 	//memcpy(g_spriteLoadBuffer, SPRITE_CACHE1_MEM, SPRITE_MAX_LOAD * SPRITE_CACHE_ENTRY_SIZE);
 
 	//give texture memory back to gpu
-	vramRestoreMainBanks(banks);
+	vramRestorePrimaryBanks(banks);
 
 	memset(g_spriteUsed, 0, SPRITE_NUMBER / 8);
 	neoSystemLoadRegion(NEOROM_SPRITEUSAGE, g_spriteUsed, SPRITE_NUMBER / 8);
@@ -445,7 +445,7 @@ void neoLoadSprites()
 	s32 i;
 
 	//allocate texture memory to cpu
-	u32 banks = vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_LCD, VRAM_D_LCD);
+	u32 banks = vramSetPrimaryBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_LCD, VRAM_D_LCD);
 	
 	//dma new sprites into texture memory
 	for(i = g_spriteTransferIndex - 1; i >= 0 ; i--, pTransfer++) {

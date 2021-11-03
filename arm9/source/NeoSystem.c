@@ -152,12 +152,12 @@ static bool romFileIterate(TRomFileIterator iterator, void* arg)
 	struct stat st;
 	char szFilename[256];
 
-	dir = diropen("/");
+	dir = opendir("/");
 	if(!dir) {
 		return false;
 	}
 
-	while(dirnext(dir, szFilename, &st) == 0) {
+	while(readdir(dir, szFilename, &st) == 0) {
 		if(st.st_mode & S_IFDIR) {
 			continue;
 		}
@@ -168,7 +168,7 @@ static bool romFileIterate(TRomFileIterator iterator, void* arg)
 		iterator(szFilename, arg);
 	}
 
-	dirclose(dir);
+	closedir(dir);
 	return true;
 }
 
@@ -201,31 +201,32 @@ bool neoSystemInit()
 	g_romCount = 0;
 	memset(g_romNames, 0, sizeof(g_romNames));
 
-	DIR_ITER* dir;
+	DIR* dir;
 	struct stat st;
 	char szFilename[256];
 
-	dir = diropen("/");
+	dir = opendir("/");
 	if(!dir) {
 		return false;
 	}
 
-	while(g_romCount < NEO_ROM_MAX && dirnext(dir, szFilename, &st) == 0) {
-		if(st.st_mode & S_IFDIR) {
+	while(g_romCount < NEO_ROM_MAX) {
+		struct dirent *pent = readdir(dir);
+		if (!pent)
+			break;
+
+		const char* szExt = strchr(pent->d_name, '.');
+		if(strcasecmp(".NEO", szExt)) {
 			continue;
 		}
-		const char* szExt = strchr(szFilename, '.');
-		if(strcmpi(".NEO", szExt)) {
-			continue;
-		}
-		
+
 		g_romCount++;
-		g_romNames[g_romCount - 1] = strdup(szFilename);
+		g_romNames[g_romCount - 1] = strdup(pent->d_name);
 		ASSERT(g_romNames[g_romCount - 1]);
 	}
 	qsort(g_romNames, g_romCount, sizeof(const char*), stringCompare);
 
-	dirclose(dir);
+	closedir(dir);
 
 	neoResetContext();
 	neoSystemSetClockDivide(2);

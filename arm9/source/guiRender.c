@@ -1,9 +1,7 @@
 #include "Default.h"
 #include "guiRender.h"
 
-//from data/gui.bin
-extern const u8 gui_bin[];
-extern const int gui_bin_size;
+#include "gui_bin.h"
 
 #define GUI_BUFFER_SIZE (GUI_WIDTH * GUI_HEIGHT)
 #define BACKBUFFER_VRAM ((u16*)SCREEN_BASE_BLOCK_SUB(21)) //42k
