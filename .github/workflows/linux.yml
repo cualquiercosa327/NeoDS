@@ -43,6 +43,7 @@ jobs:
         cd libfatCompile
         curl -LO "https://wii.leseratte10.de/devkitPro/libfat/libfat_1.0.11%20(2012)/libfat-1.0.11.tar.gz"
         tar xvzf libfat-1.0.11.tar.gz
+        cd libfat-1.0.11
         make nds-install
         cd ../
     - name: make
