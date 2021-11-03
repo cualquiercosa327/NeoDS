@@ -120,25 +120,23 @@ static void vblankIntr()
 	//antialias tile layer
 	static u16 sIndex = 0;
 	static u16 sTime = 0;
+
 	//offset
-	if(g_size != NEOVIDEO_NORMAL) {
-		BACKGROUND.bg2_rotation.dx = g_neo->tileOffsetX + jitter4[sIndex + 0];
-		BACKGROUND.bg2_rotation.dy = g_neo->tileOffsetY + jitter4[sIndex + 1];
-		BACKGROUND.bg3_rotation.dx = g_neo->tileOffsetX + jitter4[sIndex + 2];
-		BACKGROUND.bg3_rotation.dy = g_neo->tileOffsetY + jitter4[sIndex + 3];
+	REG_BG2X = g_neo->tileOffsetX + (g_size != NEOVIDEO_NORMAL ? jitter4[sIndex + 0] : 0);
+	REG_BG2Y = g_neo->tileOffsetY + (g_size != NEOVIDEO_NORMAL ? jitter4[sIndex + 1] : 0);
+	REG_BG3X = g_neo->tileOffsetX + (g_size != NEOVIDEO_NORMAL ? jitter4[sIndex + 2] : 0);
+	REG_BG3Y = g_neo->tileOffsetY + (g_size != NEOVIDEO_NORMAL ? jitter4[sIndex + 3] : 0);
+
+	if (g_size != NEOVIDEO_NORMAL) {
 		sIndex += 4;
 		if(sIndex >= 8) sIndex = 0;
-	} else {
-		BACKGROUND.bg2_rotation.dx = g_neo->tileOffsetX;
-		BACKGROUND.bg2_rotation.dy = g_neo->tileOffsetY;
-		BACKGROUND.bg3_rotation.dx = g_neo->tileOffsetX;
-		BACKGROUND.bg3_rotation.dy = g_neo->tileOffsetY;
 	}
+
 	//scale
-	BACKGROUND.bg2_rotation.xdx = g_neo->tileScaleX;
-	BACKGROUND.bg2_rotation.ydy = g_neo->tileScaleY;
-	BACKGROUND.bg3_rotation.xdx = g_neo->tileScaleX;
-	BACKGROUND.bg3_rotation.ydy = g_neo->tileScaleY;
+	REG_BG2PA = g_neo->tileScaleX;
+	REG_BG2PD = g_neo->tileScaleY;
+	REG_BG3PA = g_neo->tileScaleX;
+	REG_BG3PY = g_neo->tileScaleY;
 
 	sTime++;
 	if(sTime >= 60) {
