@@ -16,7 +16,7 @@ export TOPDIR		:=	$(CURDIR)
 #---------------------------------------------------------------------------------
 export PATH		:=	$(DEVKITARM)/bin:$(PATH)
 
-.PHONY: $(TARGET).arm7 $(TARGET).arm9
+.PHONY: arm7/$(TARGET).elf arm9/$(TARGET).elf
 
 #---------------------------------------------------------------------------------
 # main targets
@@ -30,8 +30,8 @@ $(TARGET).ds.gba	: $(TARGET).nds
 	#dlditool fcsr.dldi $(TARGET)_fs.ds.gba
 
 #---------------------------------------------------------------------------------
-$(TARGET).nds	:	$(TARGET).arm7 $(TARGET).arm9
-	ndstool	-c $(TARGET).nds -7 $(TARGET).arm7 -9 $(TARGET).arm9
+$(TARGET).nds	:	arm7/$(TARGET).elf arm9/$(TARGET).elf
+	ndstool	-c $(TARGET).nds -7 arm7/$(TARGET).elf -9 arm9/$(TARGET).elf
 #	cp $(TARGET).nds $(TARGET).x9sd.nds
 #	cp $(TARGET).nds $(TARGET).sclt.nds
 #	cp $(TARGET).nds $(TARGET).mmcf.nds
@@ -43,10 +43,6 @@ $(TARGET).nds	:	$(TARGET).arm7 $(TARGET).arm9
 #	dlditool mpcf.dldi $(TARGET).mpcf.nds
 #	dlditool scp.dldi $(TARGET).scp.nds
 	
-
-#---------------------------------------------------------------------------------
-$(TARGET).arm7	: arm7/$(TARGET).elf
-$(TARGET).arm9	: arm9/$(TARGET).elf
 
 #---------------------------------------------------------------------------------
 arm7/$(TARGET).elf:
