@@ -15,8 +15,8 @@ include $(DEVKITARM)/ds_rules
 # all directories are relative to this makefile
 #---------------------------------------------------------------------------------
 BUILD		:=	build
-SOURCES		:=	source source/libfat source/libfat/disc_io ../common/source
-INCLUDES	:=	include source ../common/source
+SOURCES		:=	source ../common/source
+INCLUDES	:=	build include source ../common/source
 DATA		:=  data
 
 #---------------------------------------------------------------------------------
@@ -36,13 +36,13 @@ ASFLAGS	:=	-g $(ARCH) -march=armv5te -mtune=arm946e-s
 
 ASFLAGS	+=	$(INCLUDE)
 
-LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*.map)
-#LDFLAGS	=	-specs=../NeoSpecs.specs -g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*.map)
+LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+#LDFLAGS	=	-specs=../NeoSpecs.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=  -lnds9
+LIBS	:=  -lfat -lnds9
  
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

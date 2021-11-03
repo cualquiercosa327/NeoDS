@@ -1,7 +1,7 @@
 #ifndef _NEO_CPU_H
 #define _NEO_CPU_H
 
-#include "cyclone.h"
+#include "Cyclone.h"
 
 typedef struct Cyclone TCycloneContext;
 
