@@ -460,5 +460,5 @@ void neoLoadSprites()
 	}
 	
 	//give texture memory back to gpu
-	vramRestoreMainBanks(banks);
+	vramRestorePrimaryBanks(banks);
 }
