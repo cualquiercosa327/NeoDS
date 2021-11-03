@@ -51,6 +51,9 @@ jobs:
         
         echo "[PATH printed below]"
         echo $PATH
+        
+        echo "OS INFO PRINTED"
+        lscpu
 
         echo "Checking status on arm-eabi-gcc"
         [ ! -f ${DEVKITARM}/bin/arm-eabi-gcc ] && echo "arm-eabi-gcc does not exist."
