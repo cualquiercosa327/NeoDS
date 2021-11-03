@@ -87,3 +87,8 @@ jobs:
 
         echo "[attempt to run make command]"
         make
+    - name: Publish build to GH Actions
+      uses: actions/upload-artifact@v2
+      with:
+        path: NeoDS.nds
+        name: neods-nightly
