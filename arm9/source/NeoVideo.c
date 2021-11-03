@@ -136,7 +136,7 @@ static void vblankIntr()
 	REG_BG2PA = g_neo->tileScaleX;
 	REG_BG2PD = g_neo->tileScaleY;
 	REG_BG3PA = g_neo->tileScaleX;
-	REG_BG3PY = g_neo->tileScaleY;
+	REG_BG3PD = g_neo->tileScaleY;
 
 	sTime++;
 	if(sTime >= 60) {
