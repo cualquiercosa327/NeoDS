@@ -192,6 +192,7 @@ int stringCompare(const void* a, const void* b)
 bool neoSystemInit()
 {
 	irqSet(IRQ_IPC_SYNC, neoSystemIPCSync);
+	irqEnable(IRQ_IPC_SYNC);
 
 	linearHeapInit(&g_vramHHeap, (void*)0x6898000, 32*KB);
 

@@ -127,7 +127,6 @@ u32 systemFileSize(s32 file)
 
 bool systemInit()
 {
-	irqInit();
 	irqSet(IRQ_TIMER0, timer0Intr);
 	irqEnable(IRQ_TIMER0);
 

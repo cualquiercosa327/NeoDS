@@ -214,6 +214,7 @@ bool neoVideoInit()
 	SetYtrigger(190); //trigger 2 lines before vsync
 	irqSet(IRQ_VBLANK, vblankIntr);
 	irqSet(IRQ_VCOUNT, vcountIntr);
+	irqEnable(IRQ_VBLANK | IRQ_VCOUNT);
 
 	g_frameCount++;
 
