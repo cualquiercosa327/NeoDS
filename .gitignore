@@ -1,9 +1,8 @@
 
-NeoDS.arm7
-NeoDS.arm9
-arm7/NeoDS.arm7.elf
-arm9/NeoDS.arm9.elf
-neods.nds
+*.arm7
+*.arm9
+*.elf
+*.nds
 *.o
 arm7/build
 arm9/build
