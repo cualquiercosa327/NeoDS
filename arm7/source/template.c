@@ -9,9 +9,9 @@
 //static int vcount = 80;
 //static touchPosition first,tempPos;
 
-static void handleInput()
+/*static void handleInput()
 {
-	/*static int lastbut = -1;
+	static int lastbut = -1;
 	
 	uint16 but=0, x=0, y=0, xpx=0, ypx=0, z1=0, z2=0;
 
@@ -59,15 +59,15 @@ static void handleInput()
 		}
 	}
 	IPC->buttons		= but;
-	vcount ^= (80 ^ 130);*/
-}
+	vcount ^= (80 ^ 130);
+}*/
 
 static void VcountHandler()
 {
-	handleInput();
+	inputGetAndSend();
 }
 
-static void VblankHandler()
+/* static void VblankHandler()
 {
 
 }
@@ -75,25 +75,26 @@ static void VblankHandler()
 static void IPCSyncHandler()
 {
 
-}
+} */
 
 //from DrZ80.asm
 //extern u32 DAATABLE_LOCAL;
 
 int main(int argc, char ** argv)
 {
-	neoIPCInit();
-	//Reset the clock if needed
-	rtcReset();
-
 	irqInit();
-	irqSet(IRQ_VBLANK, VblankHandler);
+	initClockIRQ();
+	touchInit();
+	fifoInit();
+	installSystemFIFO();
+
+	neoIPCInit();
+	//irqSet(IRQ_VBLANK, VblankHandler);
 	SetYtrigger(0);
 	irqSet(IRQ_VCOUNT, VcountHandler);
-	irqSet(IRQ_IPC_SYNC, IPCSyncHandler);
+	//irqSet(IRQ_IPC_SYNC, IPCSyncHandler);
 	irqSet(IRQ_TIMER3, neoAudioEventHandler);
-	irqEnable(IRQ_VBLANK | IRQ_VCOUNT | IRQ_IPC_SYNC | IRQ_TIMER3);
-	REG_IME = 1;
+	irqEnable(IRQ_VCOUNT | IRQ_TIMER3);
 
 	//wait for arm9 to reset us
 	neoIPCWaitCommand(NEOARM7_RESET);
