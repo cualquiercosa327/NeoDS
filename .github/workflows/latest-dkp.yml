@@ -1,6 +1,7 @@
 name: Build NeoDS using latest devKitPro tools
 
 on:
+  workflow_dispatch:
   push:
     branches: ["*"]
     paths-ignore:
