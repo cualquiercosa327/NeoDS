@@ -136,7 +136,7 @@ bool systemInit()
 	//powerON(POWER_ALL);
 
 	systemWriteLine("fatInit...");
-	bool fatOk = fatInit(8, true);
+	bool fatOk = fatInitDefault();
 	if(!fatOk) {
 		guiConsoleLog("fatInit failed!");
 		return false;
