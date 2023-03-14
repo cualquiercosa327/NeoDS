@@ -94,7 +94,7 @@ static TADPCMCacheEntry g_adpcmEntry[ADPCM_CACHE_MAX] ALIGN(32);
 #define LRU_HEAD ADPCM_CACHE_COUNT
 #define LRU_TAIL (ADPCM_CACHE_COUNT+1)
 
-void neoAudioStreamInit()
+ARM_CODE void neoAudioStreamInit()
 {
 	s32 step, nib;
 	u32 i;
@@ -144,7 +144,7 @@ void neoAudioStreamInit()
 	g_neo->adpcmActive = 0;
 }
 
-void neoAudioStreamReset()
+ARM_CODE void neoAudioStreamReset()
 {
 	u32 i;
 	for(i = 0; i < 7; i++)  {
@@ -193,7 +193,7 @@ void neoAudioAdpcmaDecode(u16* restrict pDst, const u8* restrict pSrc,
 	pAdpcm->step = step;
 }*/
 
-static inline void markEntryAsUsed(const u32 cacheIndex)
+ARM_CODE static inline void markEntryAsUsed(const u32 cacheIndex)
 {
 	TADPCMCacheEntry* restrict pEntry = &g_adpcmEntry[cacheIndex];
 	TADPCMCacheEntry* restrict pTail = &g_adpcmEntry[LRU_TAIL];
@@ -213,7 +213,7 @@ static inline void markEntryAsUsed(const u32 cacheIndex)
 	pTail->prev = cacheIndex;
 }
 
-static void* neoAudioStream(const u32 addr, s32* length)
+ARM_CODE static void* neoAudioStream(const u32 addr, s32* length)
 {
 	const u32 entryIndex = addr >> ADPCM_ENTRY_SHIFT;
 	//how many bytes into the current entry to read
@@ -253,7 +253,7 @@ static void* neoAudioStream(const u32 addr, s32* length)
 	return &g_adpcmCache[(entry << ADPCM_ENTRY_SHIFT) + entryOffset];
 }
 
-static void neoAudioStreamAdpcma(u32 ch, u16* restrict pBuffer, s32 baseStreamSize)
+ARM_CODE static void neoAudioStreamAdpcma(u32 ch, u16* restrict pBuffer, s32 baseStreamSize)
 {
 	TNeoADPCMStream* restrict pAdpcm = &g_neo->adpcm[ch];
 	u16* restrict pDst = pBuffer;
@@ -335,7 +335,7 @@ static void neoAudioStreamAdpcma(u32 ch, u16* restrict pBuffer, s32 baseStreamSi
 	profilerPop();
 }
 
-static void neoAudioStreamAdpcmb(u16* restrict pBuffer, const s32 baseStreamSize)
+ARM_CODE static void neoAudioStreamAdpcmb(u16* restrict pBuffer, const s32 baseStreamSize)
 {
 	TNeoADPCMStream* restrict pAdpcm = &g_neo->adpcm[6];
 	s32 i;
@@ -480,14 +480,14 @@ static void neoAudioStreamAdpcmb(u16* restrict pBuffer, const s32 baseStreamSize
 	profilerPop();
 }
 
-static inline void neoAudioStreamAdpcm(u32 ch, u16* restrict pBuffer, u32 baseStreamSize)
+ARM_CODE static inline void neoAudioStreamAdpcm(u32 ch, u16* restrict pBuffer, u32 baseStreamSize)
 {
 	ASSERT(ch < 7);
 	if(ch < 6) neoAudioStreamAdpcma(ch, pBuffer, baseStreamSize);
 	else neoAudioStreamAdpcmb(pBuffer, baseStreamSize);
 }
 
-static void neoAudioCommand(u32 ch, const TNeoAdpcmControl* restrict pControl)
+ARM_CODE static void neoAudioCommand(u32 ch, const TNeoAdpcmControl* restrict pControl)
 {
 	ASSERT(ch < 7);
 	TNeoADPCMStream* restrict pAdpcm = &g_neo->adpcm[ch];
@@ -529,7 +529,7 @@ static void neoAudioCommand(u32 ch, const TNeoAdpcmControl* restrict pControl)
 	}
 }
 
-static s32 neoAudioSkipCommands(u32 ch, s32 adpcmQueuePos7, s32 adpcmQueuePos9)
+ARM_CODE static s32 neoAudioSkipCommands(u32 ch, s32 adpcmQueuePos7, s32 adpcmQueuePos9)
 {
 	s32 commandIndex = adpcmQueuePos9;
 	s32 commandCount = adpcmQueuePos7 - commandIndex;
@@ -564,7 +564,7 @@ static s32 neoAudioSkipCommands(u32 ch, s32 adpcmQueuePos7, s32 adpcmQueuePos9)
 	return commandIndex;
 }
 
-static s32 neoAudioProcessChannel(u32 ch, s32 adpcmQueuePos7, s32 adpcmQueuePos9)
+ARM_CODE static s32 neoAudioProcessChannel(u32 ch, s32 adpcmQueuePos7, s32 adpcmQueuePos9)
 {
 	//TNeoADPCMStream* restrict pAdpcm = &g_neo->adpcm[ch];
 	u32 sizeToTransfer = NEO_ADPCMA_STREAM_SIZE / 2;
@@ -652,7 +652,7 @@ static s32 neoAudioProcessChannel(u32 ch, s32 adpcmQueuePos7, s32 adpcmQueuePos9
 	}
 }*/
 
-void neoAudioStreamProcess()
+ARM_CODE void neoAudioStreamProcess()
 {
 	s16 adpcmQueuePos7[7];
 	s16 adpcmQueuePos9[7];

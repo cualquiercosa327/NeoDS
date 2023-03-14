@@ -1,6 +1,8 @@
 
 *.arm7
+!Makefile.arm7
 *.arm9
+!Makefile.arm9
 *.elf
 *.nds
 *.o

@@ -1,4 +1,4 @@
-name: Build NeoDS using latest devKitPro tools
+name: Build NeoDS using latest blocksDS tools
 
 on:
   workflow_dispatch:
@@ -14,8 +14,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: devkitpro/devkitarm
-    name: Build with Docker using devkitARM
+    container: skylyrac/blocksds:slim-latest
+    name: Build with BlocksDS using its docker container
     outputs:
       commit_tag: ${{ steps.build.outputs.commit_tag }}
       commit_hash: ${{ steps.build.outputs.commit_hash }}

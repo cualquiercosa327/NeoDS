@@ -5,6 +5,7 @@
 #include "NeoMemory.h"
 #include "NeoCpu.h"
 #include <stdio.h>
+#include <nds/ndstypes.h>
 
 typedef struct _TTileCacheEntry {
 	u16 index;
@@ -29,7 +30,7 @@ static u8 g_tileLoadBuffer[TILE_MAX_LOAD * TILE_CACHE_ENTRY_SIZE] ALIGN(32);
 static void* g_tileLoadAddr[TILE_MAX_LOAD] ALIGN(32);
 static u32 g_tileLoadIndex = 0;
 
-void neoFixedInit()
+ARM_CODE void neoFixedInit()
 {
 	s32 i;
 
@@ -83,7 +84,7 @@ void neoFixedExit()
 
 }
 
-void neoDrawFixed()
+ARM_CODE void neoDrawFixed()
 {
 	//static u32 tileLoadIndex[TILE_MAX_LOAD];
 	const s32 minX = g_videoBounds.minX >> 3;
@@ -206,7 +207,7 @@ void neoDrawFixed()
 	}
 }
 
-void neoLoadTiles()
+ARM_CODE void neoLoadTiles()
 {
 	const u8* restrict pSrc = g_tileLoadBuffer;
 	u32 i;

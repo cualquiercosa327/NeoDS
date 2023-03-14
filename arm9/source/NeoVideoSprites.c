@@ -3,6 +3,7 @@
 #include "NeoSystem.h"
 #include "NeoVideo.h"
 #include "NeoMemory.h"
+#include <nds/ndstypes.h>
 
 #define SCALE_SHIFT 2
 
@@ -83,7 +84,7 @@ static TSpriteDisplayList* g_spriteList;
 #define TEXCOORD_X1 (32<<4)
 #define TEXCOORD_Y1 (32<<20)
 
-void neoSpriteInit()
+ARM_CODE void neoSpriteInit()
 {
 	s32 i;
 
@@ -192,7 +193,7 @@ void neoSpriteExit()
 
 }
 
-static inline u32 getSpriteIndex(u32 tileControl)
+ARM_CODE static inline u32 getSpriteIndex(u32 tileControl)
 {
 	u32 index = (u16)tileControl | ((tileControl & 0x00700000) >> 4);
 	if(!(g_neo->displayControl & 0x08)) {
@@ -206,7 +207,7 @@ static inline u32 getSpriteIndex(u32 tileControl)
 	return index & g_neo->spriteMask;
 }
 
-static inline void drawSpriteTile(TSpritePacket* pPacket,
+ARM_CODE static inline void drawSpriteTile(TSpritePacket* pPacket,
 								  u32 tileIndex, u32 tileControl)
 {
 	pPacket->texImage = (tileIndex << 4) | //vram offset
@@ -223,7 +224,7 @@ static inline void drawSpriteTile(TSpritePacket* pPacket,
 		((u32)g_neo->paletteRamLatch << 9);
 }
 
-void neoDrawSprites()
+ARM_CODE void neoDrawSprites()
 {
 	TSpriteDisplayList* const restrict pDisplayList = g_spriteList;
 	u32 zoomControl;
@@ -437,7 +438,7 @@ skipTile:
 	g_spriteCount = GFX_POLYGON_RAM_USAGE;
 }
 
-void neoLoadSprites()
+ARM_CODE void neoLoadSprites()
 {
 	const u8* restrict pSrc = g_spriteLoadBuffer;
 	const TSpriteTransferEntry* restrict pTransfer = g_spriteTransfer;
