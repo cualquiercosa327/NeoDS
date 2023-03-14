@@ -26,11 +26,7 @@ jobs:
       current_date: ${{ steps.build.outputs.current_date }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v1
-      - name: Install tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install python -y
+        uses: actions/checkout@v3
       - name: Build cheretic and package example
         id: build
         run: |
