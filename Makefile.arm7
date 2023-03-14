@@ -10,7 +10,7 @@ endif
 # -----------------
 
 SOURCEDIRS	:= arm7/source common/source
-INCLUDEDIRS	:= common/include
+INCLUDEDIRS	:= common/source arm7/source
 BINDIRS		:=
 
 # Defines passed to all files
@@ -21,11 +21,9 @@ DEFINES		:=
 # Libraries
 # ---------
 
-LIBS		:= -lnds7 -lsysnds7 -ldswifi7 -lmm7 -lc
+LIBS		:= -lnds7 -lsysnds7 -lc
 LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
 		   $(BLOCKSDS)/libs/libsysnds \
-		   $(BLOCKSDS)/libs/dswifi \
-		   $(BLOCKSDS)/libs/maxmod \
 		   $(BLOCKSDS)/libs/libc7
 
 # Build artifacts

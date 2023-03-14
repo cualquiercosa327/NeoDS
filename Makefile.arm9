@@ -10,10 +10,10 @@ endif
 # -----------------
 
 SOURCEDIRS	:= arm9/source common/source
-INCLUDEDIRS	:= common/include
-GFXDIRS		:= arm9/graphics
+INCLUDEDIRS	:= common/source arm9/include
+GFXDIRS		:= 
 BINDIRS		:= arm9/data
-AUDIODIRS	:= arm9/audio
+AUDIODIRS	:= 
 
 # Defines passed to all files
 # ---------------------------
@@ -23,9 +23,8 @@ DEFINES		:=
 # Libraries
 # ---------
 
-LIBS		:= -lmm9 -lsysnds9 -lnds9 -lc
-LIBDIRS		:= $(BLOCKSDS)/libs/maxmod \
-		   $(BLOCKSDS)/libs/libsysnds \
+LIBS		:= -lsysnds9 -lnds9 -lc
+LIBDIRS		:= $(BLOCKSDS)/libs/libsysnds \
 		   $(BLOCKSDS)/libs/libnds \
 		   $(BLOCKSDS)/libs/libc9
 
@@ -37,7 +36,7 @@ NAME		:= arm9
 ELF		:= build/$(NAME).elf
 DUMP		:= build/$(NAME).dump
 MAP		:= build/$(NAME).map
-SOUNDBANKDIR	:= $(BUILDDIR)/maxmod
+SOUNDBANKDIR	:= 
 
 # Tools
 # -----
