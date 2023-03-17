@@ -1,6 +1,6 @@
 NeoDS v0.2.0 by Ben Ingram - Attempted Updates by NightScript
 
-If you have questions, READ THIS DOCUMENT FIRST!!!  Then check the website, and the forums at www.gbadev.org and www.pocketheaven.com.  If you still have questions, email me at ingramb AT gmail DOT com.  I will be happy to help, but possibly slightly annoyed if your question is answered in this document.
+Icon designed by SombrAbsol.
 
 INTRODUCTION
 

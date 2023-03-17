@@ -46,7 +46,7 @@ jobs:
       - name: Publish build to GH Actions
         uses: actions/upload-artifact@v2
         with:
-          path: neods.nds
+          path: NeoDS.nds
           name: neods-nightly
 
   send_webhook:
