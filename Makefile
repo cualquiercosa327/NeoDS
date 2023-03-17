@@ -5,7 +5,7 @@
 # User config
 # ===========
 
-NAME			:= $(notdir $(CURDIR))
+NAME			:= NeoDS
 
 GAME_TITLE		:= NeoDS
 GAME_SUBTITLE1	:= Built with BlocksDS
