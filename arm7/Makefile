@@ -9,8 +9,8 @@ endif
 # Source code paths
 # -----------------
 
-SOURCEDIRS	:= source ../common/source
-INCLUDEDIRS	:= ../common/source source
+SOURCEDIRS	:= arm7/source common/source
+INCLUDEDIRS	:= common/source arm7/source
 BINDIRS		:=
 
 # Defines passed to all files
@@ -29,11 +29,11 @@ LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
 # Build artifacts
 # -----------------
 
-BUILDDIR	:= ../build/arm7
+BUILDDIR	:= build/arm7
 NAME		:= arm7
-ELF			:= ../build/$(NAME).elf
-DUMP		:= ../build/$(NAME).dump
-MAP			:= ../build/$(NAME).map
+ELF			:= build/$(NAME).elf
+DUMP		:= build/$(NAME).dump
+MAP			:= build/$(NAME).map
 
 # Tools
 # -----

@@ -9,10 +9,10 @@ endif
 # Source code paths
 # -----------------
 
-SOURCEDIRS	:= source ../common/source
-INCLUDEDIRS	:= ../common/source include
+SOURCEDIRS	:= arm9/source common/source
+INCLUDEDIRS	:= common/source arm9/include
 GFXDIRS		:= 
-BINDIRS		:= data
+BINDIRS		:= arm9/data
 AUDIODIRS	:= 
 
 # Defines passed to all files
@@ -31,11 +31,11 @@ LIBDIRS		:= $(BLOCKSDS)/libs/libsysnds \
 # Build artifacts
 # ---------------
 
-BUILDDIR	:= ../build/arm9
+BUILDDIR	:= build/arm9
 NAME		:= arm9
-ELF			:= ../build/$(NAME).elf
-DUMP		:= ../build/$(NAME).dump
-MAP			:= ../build/$(NAME).map
+ELF			:= build/$(NAME).elf
+DUMP		:= build/$(NAME).dump
+MAP			:= build/$(NAME).map
 SOUNDBANKDIR	:= 
 
 # Tools

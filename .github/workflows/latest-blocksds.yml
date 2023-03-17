@@ -17,21 +17,22 @@ jobs:
     container: skylyrac/blocksds:slim-latest
     name: Build with BlocksDS using its docker container
     outputs:
-      commit_tag: ${{ steps.build.outputs.commit_tag }}
-      commit_hash: ${{ steps.build.outputs.commit_hash }}
-      author_name: ${{ steps.build.outputs.author_name }}
-      committer_name: ${{ steps.build.outputs.committer_name }}
-      commit_subject: ${{ steps.build.outputs.commit_subject }}
-      commit_message: ${{ steps.build.outputs.commit_message }}
-      current_date: ${{ steps.build.outputs.current_date }}
+      commit_tag: ${{ steps.git.outputs.commit_tag }}
+      commit_hash: ${{ steps.git.outputs.commit_hash }}
+      author_name: ${{ steps.git.outputs.author_name }}
+      committer_name: ${{ steps.git.outputs.committer_name }}
+      commit_subject: ${{ steps.git.outputs.commit_subject }}
+      commit_message: ${{ steps.git.outputs.commit_message }}
+      current_date: ${{ steps.git.outputs.current_date }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Build cheretic and package example
+      - name: Build package & set Git Defines
         id: build
+        run: make VERBOSE=1
+      - name: Set Git Defines
+        id: git
         run: |
-          make
-
           echo ::set-output name=commit_tag::$(git describe --abbrev=0 --tags)
           echo ::set-output name=commit_hash::$(git log --format=%h -1)
 

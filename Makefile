@@ -5,12 +5,12 @@
 # User config
 # ===========
 
-NAME		:= template_combined
+NAME			:= $(notdir $(CURDIR))
 
-GAME_TITLE	:= Combined ARM7+ARM9 template
+GAME_TITLE		:= NeoDS
 GAME_SUBTITLE1	:= Built with BlocksDS
 GAME_SUBTITLE2	:= http://skylyrac.net
-GAME_ICON	:= icon.bmp
+GAME_ICON		:= icon.bmp
 
 # DLDI and internal SD slot of DSi
 # --------------------------------
@@ -29,7 +29,7 @@ NITROFATDIR	:=
 # -----
 
 MAKE		:= make
-RM		:= rm -rf
+RM			:= rm -rf
 
 # Verbose flag
 # ------------
@@ -50,7 +50,7 @@ ARM7DIR		:= arm7
 # --------------
 
 NITROFAT_IMG	:= build/nitrofat.bin
-ROM		:= $(NAME).nds
+ROM				:= $(NAME).nds
 
 # Targets
 # -------
