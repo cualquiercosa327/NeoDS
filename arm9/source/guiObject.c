@@ -43,6 +43,7 @@ void guiObjGetGlobalBounds(const TGuiObject* this, TBounds* pBounds)
 
 TGuiEventReturn guiObjSendEvent(TGuiObject* this, TGuiEventID e, void* arg)
 {
+	const TGuiTypeHeader* pType = this->pType;
 	TGuiEventReturn ret = GUIEVENTRET_NOTHANDLED;
 
 	//special actions hardwired to certain events
@@ -68,13 +69,14 @@ TGuiEventReturn guiObjSendEvent(TGuiObject* this, TGuiEventID e, void* arg)
 		break;
 	}
 
+	//try local handler if it exists
+	if(this->handler) {
+		ret = this->handler(this, e, arg);
+	}
 	//run through all base type handlers until one handles the event,
 	//or we run out of parents
-	TGuiObject* pType = this;
 	while(ret == GUIEVENTRET_NOTHANDLED && pType != NULL) {
-		if (pType->handler)
-			ret = pType->handler(this, e, arg);
-
+		ret = pType->handler(this, e, arg);
 		pType = pType->pParent;
 	}
 	return ret;
