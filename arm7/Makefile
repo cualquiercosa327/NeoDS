@@ -9,11 +9,9 @@ endif
 # Source code paths
 # -----------------
 
-SOURCEDIRS	:= arm9/source common/source
-INCLUDEDIRS	:= common/source arm9/include
-GFXDIRS		:= 
-BINDIRS		:= arm9/data
-AUDIODIRS	:= 
+SOURCEDIRS	:= source ../common/source
+INCLUDEDIRS	:= ../common/source source
+BINDIRS		:=
 
 # Defines passed to all files
 # ---------------------------
@@ -23,30 +21,29 @@ DEFINES		:=
 # Libraries
 # ---------
 
-LIBS		:= -lsysnds9 -lnds9 -lc
-LIBDIRS		:= $(BLOCKSDS)/libs/libsysnds \
-		   $(BLOCKSDS)/libs/libnds \
-		   $(BLOCKSDS)/libs/libc9
+LIBS		:= -lnds7 -lsysnds7 -lc
+LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
+		   $(BLOCKSDS)/libs/libsysnds \
+		   $(BLOCKSDS)/libs/libc7
 
 # Build artifacts
-# ---------------
+# -----------------
 
-BUILDDIR	:= build/arm9
-NAME		:= arm9
-ELF		:= build/$(NAME).elf
-DUMP		:= build/$(NAME).dump
-MAP		:= build/$(NAME).map
-SOUNDBANKDIR	:= 
+BUILDDIR	:= ../build/arm7
+NAME		:= arm7
+ELF			:= ../build/$(NAME).elf
+DUMP		:= ../build/$(NAME).dump
+MAP			:= ../build/$(NAME).map
 
 # Tools
 # -----
 
 PREFIX		:= arm-none-eabi-
-CC		:= $(PREFIX)gcc
-CXX		:= $(PREFIX)g++
+CC			:= $(PREFIX)gcc
+CXX			:= $(PREFIX)g++
 OBJDUMP		:= $(PREFIX)objdump
 MKDIR		:= mkdir
-RM		:= rm -rf
+RM			:= rm -rf
 
 # Verbose flag
 # ------------
@@ -64,16 +61,6 @@ ifneq ($(BINDIRS),)
     SOURCES_BIN	:= $(shell find -L $(BINDIRS) -name "*.bin")
     INCLUDEDIRS	+= $(addprefix $(BUILDDIR)/,$(BINDIRS))
 endif
-ifneq ($(GFXDIRS),)
-    SOURCES_PNG	:= $(shell find -L $(GFXDIRS) -name "*.png")
-    INCLUDEDIRS	+= $(addprefix $(BUILDDIR)/,$(GFXDIRS))
-endif
-ifneq ($(AUDIODIRS),)
-    SOURCES_AUDIO	:= $(shell find -L $(AUDIODIRS) -regex '.*\.\(it\|mod\|s3m\|wav\|xm\)')
-    ifneq ($(SOURCES_AUDIO),)
-        INCLUDEDIRS	+= $(SOUNDBANKDIR)
-    endif
-endif
 
 SOURCES_S	:= $(shell find -L $(SOURCEDIRS) -name "*.s")
 SOURCES_C	:= $(shell find -L $(SOURCEDIRS) -name "*.c")
@@ -82,9 +69,9 @@ SOURCES_CPP	:= $(shell find -L $(SOURCEDIRS) -name "*.cpp")
 # Compiler and linker flags
 # -------------------------
 
-DEFINES		+= -D__NDS__ -DARM9
+DEFINES		+= -D__NDS__ -DARM7
 
-ARCH		:= -march=armv5te -mtune=arm946e-s
+ARCH		:= -mcpu=arm7tdmi -mtune=arm7tdmi
 
 WARNFLAGS	:= -Wall
 
@@ -116,23 +103,15 @@ CXXFLAGS	+= -std=gnu++14 $(WARNFLAGS) $(DEFINES) $(ARCH) \
 
 LDFLAGS		:= -mthumb -mthumb-interwork $(LIBDIRSFLAGS) \
 		   -Wl,-Map,$(MAP) -Wl,--gc-sections -nolibc -nostartfiles \
-		   -T$(BLOCKSDS)/sys/crts/ds_arm9.mem \
-		   -T$(BLOCKSDS)/sys/crts/ds_arm9.ld \
+		   -T$(BLOCKSDS)/sys/crts/ds_arm7.ld \
 		   -Wl,--start-group $(LIBS) -Wl,--end-group
 
 # Intermediate build files
 # ------------------------
 
-OBJS_ASSETS	:= $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_BIN))) \
-		   $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_PNG)))
+OBJS_ASSETS	:= $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_BIN)))
 
-HEADERS_ASSETS	:= $(patsubst %.bin,%_bin.h,$(addprefix $(BUILDDIR)/,$(SOURCES_BIN))) \
-		   $(patsubst %.png,%.h,$(addprefix $(BUILDDIR)/,$(SOURCES_PNG)))
-
-ifneq ($(SOURCES_AUDIO),)
-    OBJS_ASSETS		+= $(SOUNDBANKDIR)/soundbank.c.o
-    HEADERS_ASSETS	+= $(SOUNDBANKDIR)/soundbank.h
-endif
+HEADERS_ASSETS	:= $(patsubst %.bin,%_bin.h,$(addprefix $(BUILDDIR)/,$(SOURCES_BIN)))
 
 OBJS_SOURCES	:= $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_S))) \
 		   $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_C))) \
@@ -150,58 +129,42 @@ DEPS		:= $(OBJS:.o=.d)
 all: $(ELF)
 
 $(ELF): $(OBJS)
-	@echo "  LD.9    $@"
-	$(V)$(LD) -o $@ $(OBJS) $(BLOCKSDS)/sys/crts/ds_arm9_crt0.o $(LDFLAGS)
+	@echo "  LD.7    $@"
+	$(V)$(LD) -o $@ $(OBJS) $(BLOCKSDS)/sys/crts/ds_arm7_crt0.o $(LDFLAGS)
 
 $(DUMP): $(ELF)
-	@echo "  OBJDUMP.9 $@"
+	@echo "  OBJDUMP.7 $@"
 	$(V)$(OBJDUMP) -h -C -S $< > $@
 
 dump: $(DUMP)
 
 clean:
-	@echo "  CLEAN.9"
+	@echo "  CLEAN.7"
 	$(V)$(RM) $(ELF) $(DUMP) $(MAP) $(BUILDDIR)
 
 # Rules
 # -----
 
 $(BUILDDIR)/%.s.o : %.s
-	@echo "  AS.9    $<"
+	@echo "  AS.7    $<"
 	@$(MKDIR) -p $(@D)
 	$(V)$(CC) $(ASFLAGS) -MMD -MP -c -o $@ $<
 
 $(BUILDDIR)/%.c.o : %.c
-	@echo "  CC.9    $<"
+	@echo "  CC.7    $<"
 	@$(MKDIR) -p $(@D)
 	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
 $(BUILDDIR)/%.cpp.o : %.cpp
-	@echo "  CXX.9   $<"
+	@echo "  CXX.7   $<"
 	@$(MKDIR) -p $(@D)
 	$(V)$(CXX) $(CXXFLAGS) -MMD -MP -c -o $@ $<
 
 $(BUILDDIR)/%.bin.o $(BUILDDIR)/%_bin.h : %.bin
-	@echo "  BIN2C.9 $<"
+	@echo "  BIN2C.7 $<"
 	@$(MKDIR) -p $(@D)
 	$(V)$(BLOCKSDS)/tools/bin2c/bin2c $< $(@D)
 	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(BUILDDIR)/$*.bin.o $(BUILDDIR)/$*_bin.c
-
-$(BUILDDIR)/%.png.o $(BUILDDIR)/%.h : %.png %.grit
-	@echo "  GRIT.9  $<"
-	@$(MKDIR) -p $(@D)
-	$(V)$(BLOCKSDS)/tools/grit/grit $< -ftc -W1 -o$(BUILDDIR)/$*
-	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(BUILDDIR)/$*.png.o $(BUILDDIR)/$*.c
-
-$(SOUNDBANKDIR)/soundbank.c.o $(SOUNDBANKDIR)/soundbank.h : $(SOURCES_AUDIO)
-	@echo "  MMUTIL $^"
-	@$(MKDIR) -p $(@D)
-	@$(BLOCKSDS)/tools/mmutil/mmutil $^ -d \
-		-o$(SOUNDBANKDIR)/soundbank.bin -h$(SOUNDBANKDIR)/soundbank.h
-	$(V)$(BLOCKSDS)/tools/bin2c/bin2c $(SOUNDBANKDIR)/soundbank.bin \
-		$(SOUNDBANKDIR)
-	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(SOUNDBANKDIR)/soundbank.c.o \
-		$(SOUNDBANKDIR)/soundbank_bin.c
 
 # All assets must be built before the source code
 # -----------------------------------------------

@@ -61,15 +61,15 @@ all: $(ROM)
 
 clean:
 	@echo "  CLEAN"
-	$(V)$(MAKE) -f Makefile.arm9 clean --no-print-directory
-	$(V)$(MAKE) -f Makefile.arm7 clean --no-print-directory
+	$(V)$(MAKE) -f arm9/Makefile clean --no-print-directory
+	$(V)$(MAKE) -f arm7/Makefile clean --no-print-directory
 	$(V)$(RM) $(ROM) build $(SDIMAGE)
 
 arm9:
-	$(V)+$(MAKE) -f Makefile.arm9 --no-print-directory
+	$(V)+$(MAKE) -f arm9/Makefile --no-print-directory
 
 arm7:
-	$(V)+$(MAKE) -f Makefile.arm7 --no-print-directory
+	$(V)+$(MAKE) -f arm7/Makefile --no-print-directory
 
 ifneq ($(strip $(NITROFATDIR)),)
 # Additional arguments for ndstool

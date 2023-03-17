@@ -2,6 +2,7 @@
 #include <fatfs.h>
 #include <sys/dir.h>
 #include <stdlib.h> //for qsort
+#include <sys/stat.h>
 
 #include "EmuSystem.h"
 #include "NeoSystem.h"

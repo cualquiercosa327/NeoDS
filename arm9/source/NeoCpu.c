@@ -264,8 +264,8 @@ void cpuReset()
 	g_neo->cpu.pc = g_neo->cpu.checkpc(g_neo->cpu.read32(4)); // Get Program Counter
 
 	systemWriteLine("CPU reset");
-	systemWriteLine(" -> PC: %06X (%s)",
-		g_neo->cpu.pc - g_neo->cpu.membase, cpuGetMemBase());
+	systemWriteLine(" -> PC: %06X",
+		g_neo->cpu.pc - g_neo->cpu.membase);
 	systemWriteLine(" -> SP: %06X", g_neo->cpu.a[7]);
 }
 
