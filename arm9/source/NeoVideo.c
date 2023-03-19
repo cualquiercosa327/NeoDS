@@ -1,4 +1,10 @@
 #include "Default.h"
+#include <nds/arm9/videoGL.h>
+#include <nds/interrupts.h>
+#include <nds/arm9/background.h>
+#include <nds/arm9/video.h>
+#include <nds/arm9/cache.h>
+#include <nds/system.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 #include "NeoVideo.h"

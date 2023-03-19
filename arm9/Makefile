@@ -31,11 +31,11 @@ LIBDIRS		:= $(BLOCKSDS)/libs/libsysnds \
 # Build artifacts
 # ---------------
 
-BUILDDIR	:= build/arm9
+BUILDDIR	:= arm9/build
 NAME		:= arm9
-ELF			:= build/$(NAME).elf
-DUMP		:= build/$(NAME).dump
-MAP			:= build/$(NAME).map
+ELF			:= arm9/build/$(NAME).elf
+DUMP		:= arm9/build/$(NAME).dump
+MAP			:= arm9/build/$(NAME).map
 SOUNDBANKDIR	:= 
 
 # Tools

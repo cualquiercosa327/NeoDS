@@ -1,4 +1,5 @@
 #include "Default.h"
+#include <nds/input.h>
 #include "guiBase.h"
 #include "guiRender.h"
 #include "guiMenu.h"

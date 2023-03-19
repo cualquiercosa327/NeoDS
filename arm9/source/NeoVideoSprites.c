@@ -1,9 +1,12 @@
 #include "Default.h"
+#include <nds/arm9/background.h>
+#include <nds/arm9/video.h>
+#include <nds/dma.h>
+#include <nds/arm9/cache.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 #include "NeoVideo.h"
 #include "NeoMemory.h"
-#include <nds/ndstypes.h>
 
 #define SCALE_SHIFT 2
 

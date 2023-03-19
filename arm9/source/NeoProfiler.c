@@ -1,4 +1,6 @@
 #include "Default.h"
+#include <nds/arm9/background.h>
+#include <nds/arm9/video.h>
 #include "NeoProfiler.h"
 
 #ifndef NEO_SHIPPING

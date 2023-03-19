@@ -1,4 +1,6 @@
 #include "Default.h"
+#include <nds/interrupts.h>
+#include <nds/input.h>
 #include <fatfs.h>
 #include <sys/dir.h>
 #include <stdlib.h> //for qsort

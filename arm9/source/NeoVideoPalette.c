@@ -1,7 +1,9 @@
 #include "Default.h"
+#include <nds/arm9/background.h>
+#include <nds/arm9/video.h>
+#include <nds/arm9/cache.h>
 #include "NeoVideo.h"
 #include "NeoMemory.h"
-#include <nds/ndstypes.h>
 
 static u16* g_nitroPalette;
 static u32 g_startTransfer;

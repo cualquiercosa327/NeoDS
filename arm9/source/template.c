@@ -1,4 +1,5 @@
 #include "Default.h"
+#include <nds/arm9/cache.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 #include "NeoCpu.h"

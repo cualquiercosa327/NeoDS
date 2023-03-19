@@ -1,4 +1,5 @@
-#include "nds.h"
+#include <nds/ipc.h>
+#include <nds/interrupts.h>
 #include "NeoIPC.h"
 
 #ifdef ARM9

@@ -86,7 +86,7 @@ endif
 $(ROM): arm9 arm7
 	@echo "  NDSTOOL $@"
 	$(V)$(BLOCKSDS)/tools/ndstool/ndstool -c $@ \
-		-7 build/arm7.elf -9 build/arm9.elf \
+		-7 arm7/build/arm7.elf -9 arm9/build/arm9.elf \
 		-b $(GAME_ICON) "$(GAME_TITLE);$(GAME_SUBTITLE1);$(GAME_SUBTITLE2)" \
 		$(NDSTOOL_FAT)
 

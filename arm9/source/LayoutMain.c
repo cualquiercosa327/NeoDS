@@ -1,4 +1,5 @@
 #include "Default.h"
+#include <nds/arm9/background.h>
 #include "NeoVideo.h"
 #include "NeoIPC.h"
 #include "NeoConfig.h"

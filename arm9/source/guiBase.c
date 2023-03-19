@@ -1,4 +1,5 @@
 #include "Default.h"
+#include <nds/arm9/input.h>
 #include "NeoProfiler.h"
 #include "guiConsole.h"
 #include "guiBase.h"

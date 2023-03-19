@@ -1,4 +1,6 @@
 #include "Default.h"
+#include <nds/arm9/background.h>
+#include <nds/arm9/cache.h>
 #include "guiRender.h"
 
 #include "gui_bin.h"

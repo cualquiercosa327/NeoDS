@@ -29,11 +29,11 @@ LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
 # Build artifacts
 # -----------------
 
-BUILDDIR	:= build/arm7
+BUILDDIR	:= arm7/build
 NAME		:= arm7
-ELF			:= build/$(NAME).elf
-DUMP		:= build/$(NAME).dump
-MAP			:= build/$(NAME).map
+ELF			:= arm7/build/$(NAME).elf
+DUMP		:= arm7/build/$(NAME).dump
+MAP			:= arm7/build/$(NAME).map
 
 # Tools
 # -----

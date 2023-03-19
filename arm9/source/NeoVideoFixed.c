@@ -1,11 +1,12 @@
 #include "Default.h"
+#include <nds/arm9/background.h>
+#include <nds/arm9/video.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 #include "NeoVideo.h"
 #include "NeoMemory.h"
 #include "NeoCpu.h"
 #include <stdio.h>
-#include <nds/ndstypes.h>
 
 typedef struct _TTileCacheEntry {
 	u16 index;

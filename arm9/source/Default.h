@@ -1,7 +1,7 @@
 #ifndef _DEFAULT_H
 #define _DEFAULT_H
 
-#include <nds.h>
+#include <nds/ndstypes.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
