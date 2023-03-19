@@ -70,11 +70,6 @@ static void VcountHandler()
 /* static void VblankHandler()
 {
 
-}
-
-static void IPCSyncHandler()
-{
-
 } */
 
 //from DrZ80.asm
@@ -92,7 +87,6 @@ int main(int argc, char ** argv)
 	//irqSet(IRQ_VBLANK, VblankHandler);
 	SetYtrigger(0);
 	irqSet(IRQ_VCOUNT, VcountHandler);
-	//irqSet(IRQ_IPC_SYNC, IPCSyncHandler);
 	irqSet(IRQ_TIMER3, neoAudioEventHandler);
 	irqEnable(IRQ_VCOUNT | IRQ_TIMER3);
 

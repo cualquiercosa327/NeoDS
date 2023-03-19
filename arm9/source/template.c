@@ -55,7 +55,7 @@ int main(void)
 	NEOIPC->audioCommand = 0;
 	NEOIPC->audioResult = 0;
 	//NEOIPC->audioEnabled = 1;
-	NEOIPC->globalAudioEnabled = 1;
+	NEOIPC->globalAudioEnabled = 0;
 	//NEOIPC->pZ80DaaTable = Z80DaaTable;
 
 	neoIPCInit();
