@@ -1,4 +1,7 @@
-#include "nds.h"
+#include <nds/system.h>
+#include <nds/interrupts.h>
+#include <nds/fifocommon.h>
+#include <nds/bios.h>
 #include "NeoCpuZ80.h"
 #include "NeoIPC.h"
 #include "NeoYM2610.h"

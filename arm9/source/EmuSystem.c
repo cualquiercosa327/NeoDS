@@ -1,4 +1,7 @@
 #include "Default.h"
+#include <nds/interrupts.h>
+#include <nds/timers.h>
+#include <nds/arm9/input.h>
 #include <fatfs.h>
 #include <sys/types.h>
 #include <sys/stat.h>

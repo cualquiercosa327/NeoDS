@@ -1,5 +1,5 @@
 #include <string.h> //for memset
-#include "nds.h"
+#include <nds/ndstypes.h>
 #include "NeoIPC.h"
 #include "NeoSystem7.h"
 #include "NeoYM2610.h"

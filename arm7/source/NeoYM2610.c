@@ -1,5 +1,6 @@
 #include <string.h> //for memset
-#include "nds.h"
+#include <nds/ndstypes.h>
+#include <nds/arm7/audio.h>
 #include "NeoIPC.h"
 #include "NeoSystem7.h"
 #include "NeoCpuZ80.h"

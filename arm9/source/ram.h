@@ -6,7 +6,7 @@
 #ifndef __RAM
 #define __RAM
 
-#include <nds.h>
+#include <nds/ndstypes.h>
 
 #ifdef __cplusplus
 extern "C" {

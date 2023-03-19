@@ -9,7 +9,7 @@ extern int neoSprintf (char *str, const char *fmt, ...);
 #include <stdio.h>
 #include <string.h>
 #include "Disa.h"
-#include "nds.h"
+#include <nds/ndstypes.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 

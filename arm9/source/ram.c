@@ -4,7 +4,7 @@
   See license in readme.txt
 ***********************************/
 #include "ram.h"
-
+#include <nds/memory.h>
 
 //===================================//
 //                                   //

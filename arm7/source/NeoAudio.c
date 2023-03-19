@@ -1,4 +1,7 @@
-#include "nds.h"
+#include <nds/ndstypes.h>
+#include <nds/timers.h>
+#include <nds/arm7/audio.h>
+#include <nds/interrupts.h>
 #include <string.h>
 #include "NeoSystem7.h"
 #include "NeoIPC.h"
