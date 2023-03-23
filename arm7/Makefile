@@ -21,9 +21,8 @@ DEFINES		:=
 # Libraries
 # ---------
 
-LIBS		:= -lnds7 -lsysnds7 -lc
+LIBS		:= -lnds7 -lc
 LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
-		   $(BLOCKSDS)/libs/libsysnds \
 		   $(BLOCKSDS)/libs/libc7
 
 # Build artifacts
