@@ -3,22 +3,35 @@
 #include "NeoIPC.h"
 	
 	.global neoIOInit
-	
+    .type neoIOInit, %function
+
 	.global neoReadCtrl116
+    .type neoReadCtrl116, %function
 	.global neoReadCtrl216
+    .type neoReadCtrl216, %function
 	.global neoReadCtrl316
+    .type neoReadCtrl316, %function
 	.global neoReadCoin16
-	
+    .type neoReadCoin16, %function
+
 	.global neoWriteVideo8
+    .type neoWriteVideo8, %function
 	.global neoWriteVideo16
+    .type neoWriteVideo16, %function
 	.global neoWriteVideo32
-	
+    .type neoWriteVideo32, %function
+
 	.global neoReadVideo8
+    .type neoReadVideo8, %function
 	.global neoReadVideo16
+    .type neoReadVideo16, %function
 	.global neoReadVideo32
-	
+    .type neoReadVideo32, %function
+
 	.global neoWriteWatchdog8
+    .type neoWriteWatchdog8, %function
 	.global neoWriteWatchdog16
+    .type neoWriteWatchdog16, %function
 
 	.arm
 	.align 4

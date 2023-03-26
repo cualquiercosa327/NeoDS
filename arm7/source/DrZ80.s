@@ -7,6 +7,7 @@
 ;@ For commercial use, separate licencing terms must be obtained.
 
       .global DrZ80Run
+      .type DrZ80Run, %function
       .global DrZ80Ver
 
 	  .equiv INTERRUPT_MODE, 		0		;@0 = Use internal int handler, 1 = Use Mames int handler

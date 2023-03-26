@@ -2,9 +2,13 @@
 #include "NeoSystem7.h"
 
 	.global neoZ80Read8
+    .type neoZ80Read8, %function
 	.global neoZ80Read16
+    .type neoZ80Read16, %function
 	.global neoZ80Write8
+    .type neoZ80Write8, %function
 	.global neoZ80Write16
+    .type neoZ80Write16, %function
 
 	.section .text
 	.align 2

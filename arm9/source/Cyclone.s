@@ -11,15 +11,25 @@
   .align 4
 
   .global CycloneInit
+  .type CycloneInit, %function
   .global CycloneRun
+  .type CycloneRun, %function
   .global CycloneSetSr
+  .type CycloneSetSr, %function
   .global CycloneGetSr
+  .type CycloneGetSr, %function
   .global CycloneFlushIrq
+  .type CycloneFlushIrq, %function
   .global CyclonePack
+  .type CyclonePack, %function
   .global CycloneUnpack
+  .type CycloneUnpack, %function
   .global CycloneVer
+  .type CycloneVeq, %function
   .global CycloneNextInterrupt
+  .type CycloneNextInterrupt, %function
   .global CycloneEndNoBack
+  .type CycloneEndNoBack, %function
 
 CycloneVer: .long 0x0088
 

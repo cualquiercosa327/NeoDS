@@ -2,26 +2,43 @@
 #include "NeoSystemAsm.h"
 
 	.global neoWriteSram8
+    .type neoWriteSram8, %function
 	.global neoWriteSram16
+    .type neoWriteSram16, %function
 	.global neoWriteSram32
-	
+    .type neoWriteSram32, %function
+
 	.global neoReadSram8
+    .type neoWriteSram8, %function
 	.global neoReadSram16
+    .type neoWriteSram16, %function
 	.global neoReadSram32
-	
+    .type neoWriteSram32, %function
+
 	.global neoReadSlot2Rom8
+    .type neoReadSlot2Rom8, %function
 	.global neoReadSlot2Rom16
+    .type neoReadSlot2Rom16, %function
 	.global neoReadSlot2Rom32
+    .type neoReadSlot2Rom32, %function
 	.global neoSlot2RomPc
-	
+    .type neoSlot2RomPc, %function
+
 	.global neoReadBankedRom8
+    .type neoReadBankedRom8, %function
 	.global neoReadBankedRom16
+    .type neoReadBankedRom16, %function
 	.global neoReadBankedRom32
-	
+    .type neoReadBankedRom32, %function
+
 	.global neoReadBankedRom8Uncached
+    .type neoReadBankedRom8Uncached, %function
 	.global neoReadBankedRom16Uncached
+    .type neoReadBankedRom16Uncached, %function
 	.global neoReadBankedRom32Uncached
+    .type neoReadBankedRom32Uncached, %function
 	.global neoBankedPcUncached
+    .type neoBankedPcUncached, %function
 
 	.arm
 	.section .text

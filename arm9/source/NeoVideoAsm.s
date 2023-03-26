@@ -2,9 +2,13 @@
 #include "NeoSystemAsm.h"
 
 	.global neoVideoReadPal16
+    .type neoVideoReadPal16, %function
 	.global neoVideoWritePal8
+    .type neoVideoWritePal8, %function
 	.global neoVideoWritePal16
+    .type neoVideoWritePal16, %function
 	.global neoSpriteTransfer
+    .type neoSpriteTransfer, %function
 
 neoVideoWritePal16:
 	//calculate offset into array
