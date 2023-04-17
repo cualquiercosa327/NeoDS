@@ -2,9 +2,8 @@
 #
 # SPDX-FileContributor: Antonio Niño Díaz, 2023
 
-ifeq ($(strip $(BLOCKSDS)),)
-    $(error "Environment variable BLOCKSDS not found")
-endif
+BLOCKSDS	?= /opt/blocksds/core
+BLOCKSDSEXT	?= /opt/blocksds/external
 
 # Source code paths
 # -----------------
@@ -30,11 +29,11 @@ LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
 # Build artifacts
 # ---------------
 
-BUILDDIR	:= arm9/build
+BUILDDIR	:= build/arm9
 NAME		:= arm9
-ELF			:= arm9/build/$(NAME).elf
-DUMP		:= arm9/build/$(NAME).dump
-MAP			:= arm9/build/$(NAME).map
+ELF			:= build/$(NAME).elf
+DUMP		:= build/$(NAME).dump
+MAP			:= build/$(NAME).map
 SOUNDBANKDIR	:= 
 
 # Tools
@@ -114,10 +113,11 @@ CXXFLAGS	+= -std=gnu++14 $(WARNFLAGS) $(DEFINES) $(ARCH) \
 		   -fomit-frame-pointer
 
 LDFLAGS		:= -mthumb -mthumb-interwork $(LIBDIRSFLAGS) \
-		   -Wl,-Map,$(MAP) -Wl,--gc-sections -nolibc -nostartfiles \
+		   -Wl,-Map,$(MAP) -Wl,--gc-sections -nostdlib \
 		   -Tarm9/ds_arm9_hi.mem \
 		   -T$(BLOCKSDS)/sys/crts/ds_arm9.ld \
-		   -Wl,--start-group $(LIBS) -Wl,--end-group
+		   -Wl,--no-warn-rwx-segments \
+		   -Wl,--start-group $(LIBS) -lgcc -Wl,--end-group
 
 # Intermediate build files
 # ------------------------
@@ -192,13 +192,17 @@ $(BUILDDIR)/%.png.o $(BUILDDIR)/%.h : %.png %.grit
 	$(V)$(BLOCKSDS)/tools/grit/grit $< -ftc -W1 -o$(BUILDDIR)/$*
 	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(BUILDDIR)/$*.png.o $(BUILDDIR)/$*.c
 
-$(SOUNDBANKDIR)/soundbank.c.o $(SOUNDBANKDIR)/soundbank.h : $(SOURCES_AUDIO)
-	@echo "  MMUTIL $^"
+$(SOUNDBANKDIR)/soundbank.h: $(SOURCES_AUDIO)
+	@echo "  MMUTIL  $^"
 	@$(MKDIR) -p $(@D)
 	@$(BLOCKSDS)/tools/mmutil/mmutil $^ -d \
 		-o$(SOUNDBANKDIR)/soundbank.bin -h$(SOUNDBANKDIR)/soundbank.h
+
+$(SOUNDBANKDIR)/soundbank.c.o: $(SOUNDBANKDIR)/soundbank.h
+	@echo "  BIN2C   soundbank.bin"
 	$(V)$(BLOCKSDS)/tools/bin2c/bin2c $(SOUNDBANKDIR)/soundbank.bin \
 		$(SOUNDBANKDIR)
+	@echo "  CC.9    soundbank_bin.c"
 	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(SOUNDBANKDIR)/soundbank.c.o \
 		$(SOUNDBANKDIR)/soundbank_bin.c
 
