@@ -1,7 +1,5 @@
 #include "Default.h"
-#include <nds/interrupts.h>
-#include <nds/timers.h>
-#include <nds/arm9/input.h>
+#include <nds.h>
 #include <fatfs.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -11,7 +9,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <malloc.h>
-#include "ram.h"
 
 #include "EmuSystem.h"
 #include "NeoSystem.h"
@@ -22,6 +19,7 @@
 #include "guiConsole.h"
 
 static volatile u32 g_ms;
+static TLinearHeap g_slot2Heap;
 static TLinearHeap g_ramHeap;
 static u8 g_mainRam[1*MB+600*KB] ALIGN(32);
 
@@ -138,6 +136,21 @@ bool systemInit()
 
 	//powerON(POWER_ALL);
 
+	bool ramOk = peripheralSlot2Init(SLOT2_PERIPHERAL_EXTRAM);
+	if (ramOk) {
+		peripheralSlot2Open(SLOT2_PERIPHERAL_EXTRAM);
+		peripheralSlot2EnableCache(true);
+
+		volatile void* pSlot2Ram = peripheralSlot2RamStart();
+		u32 slot2Size = peripheralSlot2RamSize();
+		linearHeapInit(&g_slot2Heap, (void*)pSlot2Ram, slot2Size);
+		systemWriteLine("Found %d bytes of slot2ram", slot2Size);
+		peripheralSlot2Close();
+	} else {
+		systemWriteLine("No slot2ram");
+		linearHeapInit(&g_slot2Heap, 0, 0);
+	}
+
 	systemWriteLine("fatInit...");
 	bool fatOk = fatInitDefault();
 	if(!fatOk) {
@@ -152,7 +165,7 @@ bool systemInit()
 
 bool systemIsSlot2Active()
 {
-	return ram_size() > 0;
+	return peripheralSlot2RamSize() > 0;
 }
 
 void* systemRamAlloc(u32 size)
@@ -168,6 +181,32 @@ u32 systemGetRamFree()
 void systemRamReset()
 {
 	linearHeapReset(&g_ramHeap);
+}
+
+void* systemSlot2Alloc(u32 size)
+{
+	return linearHeapAlloc(&g_slot2Heap, size);
+}
+
+u32 systemGetSlot2Free()
+{
+	return linearHeapGetFree(&g_slot2Heap);
+}
+
+void systemSlot2Reset()
+{
+	linearHeapReset(&g_slot2Heap);
+	systemWriteLine("Slot2 reset: %d bytes", systemGetSlot2Free());
+}
+
+void systemSlot2Unlock()
+{
+	peripheralSlot2RamStart();
+}
+
+void systemSlot2Lock()
+{
+	peripheralSlot2Close();
 }
 
 
