@@ -6,5 +6,4 @@
 *.elf
 *.nds
 *.o
-arm7/build
-arm9/build
+build

@@ -1,109 +1,90 @@
+// SPDX-License-Identifier: Zlib
+// SPDX-FileNotice: Modified from the original version by the BlocksDS project.
+//
+// Copyright (C) 2005 Michael Noland (joat)
+// Copyright (C) 2005 Jason Rogers (Dovoto)
+// Copyright (C) 2005-2015 Dave Murphy (WinterMute)
+// Copyright (C) 2023 Antonio Niño Díaz
+
+// Default ARM7 core
+
 #include <nds.h>
-#include <stdlib.h>
 #include "NeoSystem7.h"
 #include "NeoCpuZ80.h"
 #include "NeoYM2610.h"
 #include "NeoIPC.h"
 #include "NeoAudio.h"
 
-//static int vcount = 80;
-//static touchPosition first,tempPos;
+volatile bool exit_loop = false;
 
-/*static void handleInput()
+void power_button_callback(void)
 {
-	static int lastbut = -1;
-	
-	uint16 but=0, x=0, y=0, xpx=0, ypx=0, z1=0, z2=0;
-
-	but = REG_KEYXY;
-
-	if (!( (but ^ lastbut) & (1<<6))) {
- 
-		tempPos = touchReadXY();
-
-		if ( tempPos.x == 0 || tempPos.y == 0 ) {
-			but |= (1 <<6);
-			lastbut = but;
-		} else {
-			x = tempPos.x;
-			y = tempPos.y;
-			xpx = tempPos.px;
-			ypx = tempPos.py;
-			z1 = tempPos.z1;
-			z2 = tempPos.z2;
-		}
-		
-	} else {
-		lastbut = but;
-		but |= (1 <<6);
-	}
-
-	if ( vcount == 80 ) {
-		first = tempPos;
-	} else {
-		if (	abs( xpx - first.px) > 10 || abs( ypx - first.py) > 10 ||
-				(but & ( 1<<6)) ) {
-
-			but |= (1 <<6);
-			lastbut = but;
-
-		} else { 	
-			IPC->mailBusy = 1;
-			IPC->touchX			= x;
-			IPC->touchY			= y;
-			IPC->touchXpx		= xpx;
-			IPC->touchYpx		= ypx;
-			IPC->touchZ1		= z1;
-			IPC->touchZ2		= z2;
-			IPC->mailBusy = 0;
-		}
-	}
-	IPC->buttons		= but;
-	vcount ^= (80 ^ 130);
-}*/
-
-static void VcountHandler()
-{
-	inputGetAndSend();
+    exit_loop = true;
 }
 
-/* static void VblankHandler()
+void vblank_handler(void)
 {
+    inputGetAndSend();
+}
 
-} */
-
-//from DrZ80.asm
-//extern u32 DAATABLE_LOCAL;
-
-int main(int argc, char ** argv)
+int main(int argc, char *argv[])
 {
-	irqInit();
-	initClockIRQ();
-	touchInit();
-	fifoInit();
-	installSystemFIFO();
-
 	neoIPCInit();
-	//irqSet(IRQ_VBLANK, VblankHandler);
+	//Reset the clock if needed
+	rtcReset();
+
+    // Initialize sound hardware
+    enableSound();
+
+    // Read user information from the firmware (name, birthday, etc)
+    readUserSettings();
+
+    // Stop LED blinking
+    ledBlink(0);
+
+    // Using the calibration values read from the firmware with
+    // readUserSettings(), calculate some internal values to convert raw
+    // coordinates into screen coordinates.
+    touchInit();
+
+    irqInit();
+    irqSet(IRQ_VBLANK, vblank_handler);
 	SetYtrigger(0);
-	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_TIMER3, neoAudioEventHandler);
-	irqEnable(IRQ_VCOUNT | IRQ_TIMER3);
 
-	//wait for arm9 to reset us
-	neoIPCWaitCommand(NEOARM7_RESET);
+    fifoInit();
 
-	//kinda messy...we keep the DaaTable in main ram on the arm9 side,
-	//give the arm7 a pointer through the IPC struct here
-	//DAATABLE_LOCAL = (u32)NEOIPC->pZ80DaaTable;
-	
-	neoSystem7Init();
+    installSystemFIFO(); // Sleep mode, storage, firmware...
 
+    // This sets a callback that is called when the power button in a DSi
+    // console is pressed. It has no effect in a DS.
+    setPowerButtonCB(power_button_callback);
+
+    // Read current date from the RTC and setup an interrupt to update the time
+    // regularly. The interrupt simply adds one second every time, it doesn't
+    // read the date. Reading the RTC is very slow, so it's a bad idea to do it
+    // frequently.
+    initClockIRQTimer(3);
+
+    irqEnable(IRQ_VBLANK);
+    REG_IME = 1;
+
+    neoIPCWaitCommand(NEOARM7_RESET);
+
+    while (!exit_loop)
+    {
+        const uint16_t key_mask = KEY_SELECT | KEY_START | KEY_L | KEY_R;
+        uint16_t keys_pressed = ~REG_KEYINPUT;
+
+        if ((keys_pressed & key_mask) == key_mask)
+            exit_loop = true;
+
+        swiWaitForVBlank();
+    }
+
+    neoSystem7Init();
 	neoIPCAckCommand();
-
 	neoSystem7Execute();
 
-	return 0;
+    return 0;
 }
-
-
