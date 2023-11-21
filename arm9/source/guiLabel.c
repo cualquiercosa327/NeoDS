@@ -32,6 +32,6 @@ void guiLabelSetTextv(TGuiLabel* this, const char* szFormat, ...)
 	va_list v;
 	va_start(v, szFormat);
 	//vsniprintf(this->szText, GUI_MAX_TEXT, szFormat, v);
-	neoVsnprintf(this->szText, GUI_MAX_TEXT, szFormat, v);
+	vsnprintf(this->szText, GUI_MAX_TEXT, szFormat, v);
 	va_end(v);
 }

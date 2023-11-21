@@ -201,7 +201,7 @@ void systemSlot2Reset()
 
 void systemSlot2Unlock()
 {
-	peripheralSlot2RamStart();
+	peripheralSlot2Open(SLOT2_PERIPHERAL_EXTRAM);
 }
 
 void systemSlot2Lock()

@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "cstdlib": "c",
+        "types.h": "c",
+        "nds.h": "c",
+        "guitargrip.h": "c",
+        "boxtest.h": "c",
+        "background.h": "c",
+        "video.h": "c",
+        "sassert.h": "c"
     }
 }

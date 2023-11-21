@@ -84,13 +84,11 @@ void guiConsoleLog(const char* szText)
 	g_logCount++;
 }
 
-extern int neoVsnprintf (char *str, size_t count, const char *fmt, va_list arg);
-
 void guiConsoleLogfv(const char* szFormat, va_list v)
 {
 	char szBuffer[64];
 	//vsniprintf(szBuffer, sizeof(szBuffer), szFormat, v);
-	neoVsnprintf(szBuffer, sizeof(szBuffer), szFormat, v);
+	vsnprintf(szBuffer, sizeof(szBuffer), szFormat, v);
 	guiConsoleLog(szBuffer);
 }
 

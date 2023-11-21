@@ -6,10 +6,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#ifndef NULL
-#define NULL ((void*)0)
-#endif
-
 typedef struct _TPoint {
 	s32 x;
 	s32 y;
@@ -39,8 +35,5 @@ static inline bool boundsTest(const TBounds* pBounds, s32 x, s32 y)
 
 #include "EmuSystem.h"
 #include "NeoSystem.h"
-
-int neoSprintf (char *str, const char *fmt, ...);
-int neoVsnprintf (char *str, size_t count, const char *fmt, va_list args);
 
 #endif

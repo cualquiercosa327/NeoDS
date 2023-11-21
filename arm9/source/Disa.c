@@ -4,8 +4,6 @@
 #pragma warning(disable:4115)
 #endif
 
-extern int neoSprintf (char *str, const char *fmt, ...);
-
 #include <stdio.h>
 #include <string.h>
 #include "Disa.h"
@@ -33,12 +31,12 @@ static unsigned int DisaLong(unsigned int a)
 int DisaGetEa(char *t,int ea,int size)
 {
   ea&=0x3f; t[0]=0;
-  if ((ea&0x38)==0x00) { neoSprintf(t,"d%d",ea  ); return 0; }    // 000rrr
-  if ((ea&0x38)==0x08) { neoSprintf(t,"a%d",ea&7); return 0; }    // 001rrr
-  if ((ea&0x38)==0x10) { neoSprintf(t,"(a%d)",ea&7); return 0; }  // 010rrr
-  if ((ea&0x38)==0x18) { neoSprintf(t,"(a%d)+",ea&7); return 0; } // 011rrr
-  if ((ea&0x38)==0x20) { neoSprintf(t,"-(a%d)",ea&7); return 0; } // 100rrr
-  if ((ea&0x38)==0x28) { neoSprintf(t,"($%x,a%d)",DisaWord(DisaPc)&0xffff,ea&7); DisaPc+=2; return 0; } // 101rrr
+  if ((ea&0x38)==0x00) { sprintf(t,"d%d",ea  ); return 0; }    // 000rrr
+  if ((ea&0x38)==0x08) { sprintf(t,"a%d",ea&7); return 0; }    // 001rrr
+  if ((ea&0x38)==0x10) { sprintf(t,"(a%d)",ea&7); return 0; }  // 010rrr
+  if ((ea&0x38)==0x18) { sprintf(t,"(a%d)+",ea&7); return 0; } // 011rrr
+  if ((ea&0x38)==0x20) { sprintf(t,"-(a%d)",ea&7); return 0; } // 100rrr
+  if ((ea&0x38)==0x28) { sprintf(t,"($%x,a%d)",DisaWord(DisaPc)&0xffff,ea&7); DisaPc+=2; return 0; } // 101rrr
 
   if ((ea&0x38)==0x30)
   {
@@ -51,22 +49,22 @@ int DisaGetEa(char *t,int ea,int size)
     reg=(ext>>12)&7; wol=ext&0x0800?'l':'w';
     scale=1<<((ext>>9)&3);
 
-    if (scale<2) neoSprintf(t,"($%x,a%d,%c%d.%c)",   off,areg,da,reg,wol);
-    else         neoSprintf(t,"($%x,a%d,%c%d.%c*%d)",off,areg,da,reg,wol,scale); // 68020
+    if (scale<2) sprintf(t,"($%x,a%d,%c%d.%c)",   off,areg,da,reg,wol);
+    else         sprintf(t,"($%x,a%d,%c%d.%c*%d)",off,areg,da,reg,wol,scale); // 68020
 
     DisaPc+=2;
     return 0;
   }
 
-  if (ea==0x38) { neoSprintf(t,"$%x.w",DisaWord(DisaPc)&0xffff); DisaPc+=2; return 0; } // 111000 - Absolute short
-  if (ea==0x39) { neoSprintf(t,"$%x.l",DisaLong(DisaPc));        DisaPc+=4; return 0; } // 111001 - Absolute long
+  if (ea==0x38) { sprintf(t,"$%x.w",DisaWord(DisaPc)&0xffff); DisaPc+=2; return 0; } // 111000 - Absolute short
+  if (ea==0x39) { sprintf(t,"$%x.l",DisaLong(DisaPc));        DisaPc+=4; return 0; } // 111001 - Absolute long
 
   if (ea==0x3a)
   {
     // 111010 - PC Relative
     int ext=DisaWord(DisaPc)&0xffff;
-    neoSprintf(t,"($%x,pc)",ext);
-    neoSprintf(Comment,"; =%x",DisaPc+(short)ext); // Comment where pc+ext is
+    sprintf(t,"($%x,pc)",ext);
+    sprintf(Comment,"; =%x",DisaPc+(short)ext); // Comment where pc+ext is
     DisaPc+=2;
     return 0;
   }
@@ -81,10 +79,10 @@ int DisaGetEa(char *t,int ea,int size)
     reg=(ext>>12)&7; wol=ext&0x0800?'l':'w';
     scale=1<<((ext>>9)&3);
 
-    if (scale<2) neoSprintf(t,"($%x,pc,%c%d.%c)",   off,da,reg,wol);
-    else         neoSprintf(t,"($%x,pc,%c%d.%c*%d)",off,da,reg,wol,scale); // 68020
+    if (scale<2) sprintf(t,"($%x,pc,%c%d.%c)",   off,da,reg,wol);
+    else         sprintf(t,"($%x,pc,%c%d.%c*%d)",off,da,reg,wol,scale); // 68020
 
-    neoSprintf(Comment,"; =%x",DisaPc+(char)off); // Comment where pc+ext is
+    sprintf(Comment,"; =%x",DisaPc+(char)off); // Comment where pc+ext is
     DisaPc+=2;
     return 0;
   }
@@ -94,15 +92,15 @@ int DisaGetEa(char *t,int ea,int size)
     // 111100 - Immediate
     switch (size)
     {
-      case 0: neoSprintf(t,"#$%x",DisaWord(DisaPc)&0x00ff); DisaPc+=2; return 0;
-      case 1: neoSprintf(t,"#$%x",DisaWord(DisaPc)&0xffff); DisaPc+=2; return 0;
-      case 2: neoSprintf(t,"#$%x",DisaLong(DisaPc)       ); DisaPc+=4; return 0;
+      case 0: sprintf(t,"#$%x",DisaWord(DisaPc)&0x00ff); DisaPc+=2; return 0;
+      case 1: sprintf(t,"#$%x",DisaWord(DisaPc)&0xffff); DisaPc+=2; return 0;
+      case 2: sprintf(t,"#$%x",DisaLong(DisaPc)       ); DisaPc+=4; return 0;
     }
     return 1;
   }
 
 // Unknown effective address
-  neoSprintf(t,"ea=(%d%d%d %d%d%d)",
+  sprintf(t,"ea=(%d%d%d %d%d%d)",
     (ea>>5)&1,(ea>>4)&1,(ea>>3)&1,
     (ea>>2)&1,(ea>>1)&1, ea    &1);
   return 1;
@@ -112,8 +110,8 @@ static void GetOffset(char *text)
 {
   int off=(short)DisaWord(DisaPc); DisaPc+=2;
 
-  if (off<0) neoSprintf(text,"-$%x",-off);
-  else       neoSprintf(text,"$%x",  off);
+  if (off<0) sprintf(text,"-$%x",-off);
+  else       sprintf(text,"$%x",  off);
 }
 
 // ================ Opcodes 0x0000+ ================
@@ -132,7 +130,7 @@ static int DisaArithImm(int op)
   DisaGetEa(seat,0x3c,size);
   DisaGetEa(deat,dea, size);
 
-  neoSprintf(DisaText,"%si.%c %s, %s",arith[type],Tasm[size],seat,deat);
+  sprintf(DisaText,"%si.%c %s, %s",arith[type],Tasm[size],seat,deat);
   return 0;
 }
 
@@ -149,8 +147,8 @@ static int DisaMovep(int op)
   an  = op    &7;
 
   GetOffset(offset);
-  if (dir) neoSprintf(DisaText,"movep.%c d%d, (%s,a%d)",Tasm[size],dn,offset,an);
-  else     neoSprintf(DisaText,"movep.%c (%s,a%d), d%d",Tasm[size],offset,an,dn);
+  if (dir) sprintf(DisaText,"movep.%c d%d, (%s,a%d)",Tasm[size],dn,offset,an);
+  else     sprintf(DisaText,"movep.%c (%s,a%d), d%d",Tasm[size],offset,an,dn);
 
   return 0;
 }
@@ -167,7 +165,7 @@ static int DisaArithSr(int op)
   size=(op>>6)&1;
 
   DisaGetEa(seat,0x3c,size);
-  neoSprintf(DisaText,"%s.%c %s, %s", opcode[type], Tasm[size], seat, size?"sr":"ccr");
+  sprintf(DisaText,"%s.%c %s, %s", opcode[type], Tasm[size], seat, size?"sr":"ccr");
 
   return 0;
 }
@@ -189,7 +187,7 @@ static int DisaBtstReg(int op)
   DisaGetEa(seat,sea,0);
   DisaGetEa(deat,dea,0);
 
-  neoSprintf(DisaText,"%s %s, %s",opcode[type],seat,deat);
+  sprintf(DisaText,"%s %s, %s",opcode[type],seat,deat);
   return 0;
 }
 
@@ -205,7 +203,7 @@ static int DisaBtstImm(int op)
   DisaGetEa(seat,   0x3c,0);
   DisaGetEa(deat,op&0x3f,0);
 
-  neoSprintf(DisaText,"%s %s, %s",opcode[type],seat,deat);
+  sprintf(DisaText,"%s %s, %s",opcode[type],seat,deat);
   return 0;
 }
 
@@ -236,8 +234,8 @@ static int DisaMove(int op)
   dea|=(op&0x0e00)>>9;
   DisaGetEa(deat,dea,size);
 
-  neoSprintf(inst,"move%s.%c",movea,Tasm[size]);
-  neoSprintf(DisaText,"%s %s, %s",inst,seat,deat);
+  sprintf(inst,"move%s.%c",movea,Tasm[size]);
+  sprintf(DisaText,"%s %s, %s",inst,seat,deat);
   return 0;
 }
 
@@ -253,7 +251,7 @@ static int DisaNeg(int op)
   size=(op>>6)&3; if (size>=3) return 1;
   DisaGetEa(eat,op&0x3f,size);
 
-  neoSprintf(DisaText,"%s.%c %s",opcode[type],Tasm[size],eat);
+  sprintf(DisaText,"%s.%c %s",opcode[type],Tasm[size],eat);
   return 0;
 }
 
@@ -270,10 +268,10 @@ static int DisaMoveSr(int op)
 
   switch (type)
   {
-    default: neoSprintf(DisaText,"move sr, %s", eat); break;
-    case 1:  neoSprintf(DisaText,"move ccr, %s",eat); break;
-    case 2:  neoSprintf(DisaText,"move %s, ccr",eat); break;
-    case 3:  neoSprintf(DisaText,"move %s, sr", eat); break;
+    default: sprintf(DisaText,"move sr, %s", eat); break;
+    case 1:  sprintf(DisaText,"move ccr, %s",eat); break;
+    case 2:  sprintf(DisaText,"move %s, ccr",eat); break;
+    case 3:  sprintf(DisaText,"move %s, sr", eat); break;
   }
   return 0;
 }
@@ -291,7 +289,7 @@ static int DisaLea(int op)
   dea=(op>>9)&7; dea|=8;
   DisaGetEa(deat,dea,2);
 
-  neoSprintf(DisaText,"lea %s, %s",seat,deat);
+  sprintf(DisaText,"lea %s, %s",seat,deat);
   return 0;
 }
 
@@ -316,8 +314,8 @@ static int MakeRegList(char *list,int mask,int ea)
       // low to i-1 are a continuous section, add it:
       char add[16]="";
       int ad=low&8?'a':'d';
-      if (low==i-1) neoSprintf(add,"%c%d/",     ad,low&7);
-      if (low< i-1) neoSprintf(add,"%c%d-%c%d/",ad,low&7, ad,(i-1)&7);
+      if (low==i-1) sprintf(add,"%c%d/",     ad,low&7);
+      if (low< i-1) sprintf(add,"%c%d-%c%d/",ad,low&7, ad,(i-1)&7);
       strcat(list,add);
 
       low=i; // Next section
@@ -336,7 +334,7 @@ static int MakeRegList(char *list,int mask,int ea)
 static int DisaSwap(int op)
 {
   // Swap, 01001000 01000nnn swap Dn
-  neoSprintf(DisaText,"swap d%d",op&7);
+  sprintf(DisaText,"swap d%d",op&7);
   return 0;
 }
 
@@ -350,7 +348,7 @@ static int DisaPea(int op)
   ea=op&0x003f; if (ea<0x10) return 1; // swap opcode
   DisaGetEa(eat,ea,2);
 
-  neoSprintf(DisaText,"pea %s",eat);
+  sprintf(DisaText,"pea %s",eat);
   return 0;
 }
 
@@ -364,7 +362,7 @@ static int DisaExt(int op)
   size=(op>>6)&1; size++;
   DisaGetEa(eat,op&0x3f,size);
 
-  neoSprintf(DisaText,"ext.%c %s",Tasm[size],eat);
+  sprintf(DisaText,"ext.%c %s",Tasm[size],eat);
   return 0;
 }
 
@@ -385,15 +383,15 @@ static int DisaMovem(int op)
   MakeRegList(list,mask,ea); // Turn register mask into text
   DisaGetEa(eat,ea,size);
 
-  if (dir) neoSprintf(DisaText,"movem.%c %s, %s",Tasm[size],eat,list);
-  else     neoSprintf(DisaText,"movem.%c %s, %s",Tasm[size],list,eat);
+  if (dir) sprintf(DisaText,"movem.%c %s, %s",Tasm[size],eat,list);
+  else     sprintf(DisaText,"movem.%c %s, %s",Tasm[size],list,eat);
   return 0;
 }
 
 // ================ Opcodes 0x4e40+ ================
 static int DisaTrap(int op)
 {
-  neoSprintf(DisaText,"trap #%d",op&0xf);
+  sprintf(DisaText,"trap #%d",op&0xf);
   return 0;
 }
 
@@ -407,7 +405,7 @@ static int DisaLink(int op)
   DisaGetEa(eat,(op&7)|8,0);
   GetOffset(offset);
 
-  neoSprintf(DisaText,"link %s,#%s",eat,offset);
+  sprintf(DisaText,"link %s,#%s",eat,offset);
 
   return 0;
 }
@@ -419,7 +417,7 @@ static int DisaUnlk(int op)
   char eat[64]="";
 
   DisaGetEa(eat,(op&7)|8,0);
-  neoSprintf(DisaText,"unlk %s",eat);
+  sprintf(DisaText,"unlk %s",eat);
 
   return 0;
 }
@@ -435,8 +433,8 @@ static int DisaMoveUsp(int op)
   ea=(op&7)|8;
   DisaGetEa(eat,ea,0);
 
-  if (dir) neoSprintf(DisaText,"move usp, %s",eat);
-  else     neoSprintf(DisaText,"move %s, usp",eat);
+  if (dir) sprintf(DisaText,"move usp, %s",eat);
+  else     sprintf(DisaText,"move %s, usp",eat);
   return 0;
 }
 
@@ -448,7 +446,7 @@ static int Disa4E70(int op)
 
   n=op&7;
 
-  neoSprintf(DisaText,"%s",inst[n]);
+  sprintf(DisaText,"%s",inst[n]);
 
   //todo - 'stop' with 16 bit data
   
@@ -467,7 +465,7 @@ static int DisaTst(int op)
   DisaGetEa(eat,ea,0);
   size=(op>>6)&3; if (size>=3) return 1;
 
-  neoSprintf(DisaText,"tst.%c %s",Tasm[size],eat);
+  sprintf(DisaText,"tst.%c %s",Tasm[size],eat);
   return 0;
 }
 
@@ -481,7 +479,7 @@ static int DisaJsr(int op)
   sea=op&0x003f;
   DisaGetEa(seat,sea,0);
 
-  neoSprintf(DisaText,"j%s %s", op&0x40?"mp":"sr", seat);
+  sprintf(DisaText,"j%s %s", op&0x40?"mp":"sr", seat);
   return 0;
 }
 
@@ -499,7 +497,7 @@ static int DisaAddq(int op)
 
   DisaGetEa(eat,ea,size);
 
-  neoSprintf(DisaText,"%s.%c #%d, %s",type?"subq":"addq",Tasm[size],num,eat);
+  sprintf(DisaText,"%s.%c #%d, %s",type?"subq":"addq",Tasm[size],num,eat);
   return 0;
 }
 
@@ -519,7 +517,7 @@ static int DisaSet(int op)
   if ((ea&0x38)==0x08) return 1; // dbra, not scc
 
   DisaGetEa(eat,ea,0);
-  neoSprintf(DisaText,"s%s %s",cc,eat);
+  sprintf(DisaText,"s%s %s",cc,eat);
   return 0;
 }
 
@@ -545,7 +543,7 @@ static int DisaDbra(int op)
   pc=DisaPc;
   Offset=(short)DisaWord(DisaPc); DisaPc+=2;
 
-  neoSprintf(DisaText,"d%s %s, %x",Bra,deat,pc+Offset);
+  sprintf(DisaText,"d%s %s, %x",Bra,deat,pc+Offset);
   return 0;
 }
 
@@ -569,7 +567,7 @@ static int DisaBranch(int op)
        if (Offset== 0) { Offset=(short)DisaWord(DisaPc); DisaPc+=2; }
   else if (Offset==-1) { Offset=       DisaLong(DisaPc); DisaPc+=4; }
 
-  neoSprintf(DisaText,"%s %x",Bra,pc+Offset);
+  sprintf(DisaText,"%s %x",Bra,pc+Offset);
   return 0;
 }
 
@@ -586,7 +584,7 @@ static int DisaMoveq(int op)
   DisaGetEa(deat,dea,2);
 
   val=(char)(op&0xff);
-  neoSprintf(DisaText,"%s #$%x, %s",inst,val,deat);
+  sprintf(DisaText,"%s #$%x, %s",inst,val,deat);
   return 0;
 }
 
@@ -609,8 +607,8 @@ static int DisaArithReg(int op)
   DisaGetEa(reat,rea,size);
   DisaGetEa( eat, ea,size);
 
-  if (dir) neoSprintf(DisaText,"%s.%c %s, %s",opcode[type],Tasm[size],reat,eat);
-  else     neoSprintf(DisaText,"%s.%c %s, %s",opcode[type],Tasm[size],eat,reat);
+  if (dir) sprintf(DisaText,"%s.%c %s, %s",opcode[type],Tasm[size],reat,eat);
+  else     sprintf(DisaText,"%s.%c %s, %s",opcode[type],Tasm[size],eat,reat);
   return 0;
 }
 
@@ -627,8 +625,8 @@ static int DisaAbcd(int op)
   addr=(op>> 3)&1;
   sn  = op     &7;
 
-  if (addr) neoSprintf(DisaText,"%s -(a%d), -(a%d)",opcode[type],sn,dn);
-  else      neoSprintf(DisaText,"%s d%d, d%d",       opcode[type],sn,dn);
+  if (addr) sprintf(DisaText,"%s -(a%d), -(a%d)",opcode[type],sn,dn);
+  else      sprintf(DisaText,"%s d%d, d%d",       opcode[type],sn,dn);
 
   return 0;
 }
@@ -649,7 +647,7 @@ static int DisaMul(int op)
   DisaGetEa(reat,rea,size);
   DisaGetEa( eat, ea,size);
 
-  neoSprintf(DisaText,"%s%c.%c %s, %s",opcode[type],sign?'s':'u',Tasm[size],eat,reat);
+  sprintf(DisaText,"%s%c.%c %s, %s",opcode[type],sign?'s':'u',Tasm[size],eat,reat);
   return 0;
 }
 
@@ -669,7 +667,7 @@ static int DisaAritha(int op)
   DisaGetEa(seat,sea,size);
   DisaGetEa(deat,dea,size);
 
-  neoSprintf(DisaText,"%s.%c %s, %s",aritha[type],Tasm[size],seat,deat);
+  sprintf(DisaText,"%s.%c %s, %s",aritha[type],Tasm[size],seat,deat);
   return 0;
 }
 
@@ -687,8 +685,8 @@ static int DisaCmpEor(int op)
   DisaGetEa(reat,(op>>9)&7,size);
   DisaGetEa(eat,  op&0x3f, size);
 
-  if (type) neoSprintf(DisaText,"eor.%c %s, %s",Tasm[size],reat,eat);
-  else      neoSprintf(DisaText,"cmp.%c %s, %s",Tasm[size],eat,reat);
+  if (type) sprintf(DisaText,"eor.%c %s, %s",Tasm[size],reat,eat);
+  else      sprintf(DisaText,"cmp.%c %s, %s",Tasm[size],eat,reat);
   return 0;
 }
 
@@ -707,7 +705,7 @@ static int DisaCmpm(int op)
   DisaGetEa(deat,dea,size);
   DisaGetEa(seat,sea,size);
 
-  neoSprintf(DisaText,"cmpm.%c (%s)+, (%s)+",Tasm[size],seat,deat);
+  sprintf(DisaText,"cmpm.%c (%s)+, (%s)+",Tasm[size],seat,deat);
 
   return 0;
 }
@@ -724,9 +722,9 @@ static int DisaExg(int op)
   type= op&0xf8;
   sr  = op&7;
 
-       if (type==0x40) neoSprintf(DisaText,"exg d%d, d%d",sr,tr);
-  else if (type==0x48) neoSprintf(DisaText,"exg a%d, a%d",sr,tr);
-  else if (type==0x88) neoSprintf(DisaText,"exg a%d, d%d",sr,tr);
+       if (type==0x40) sprintf(DisaText,"exg d%d, d%d",sr,tr);
+  else if (type==0x48) sprintf(DisaText,"exg a%d, a%d",sr,tr);
+  else if (type==0x88) sprintf(DisaText,"exg a%d, d%d",sr,tr);
   else return 1;
 
   return 0;
@@ -748,7 +746,7 @@ static int DisaAddx(int op)
   DisaGetEa(deat,dea,size);
   DisaGetEa(seat,sea,size);
 
-  neoSprintf(DisaText,"%s.%c %s, %s",opcode[type],Tasm[size],seat,deat);
+  sprintf(DisaText,"%s.%c %s, %s",opcode[type],Tasm[size],seat,deat);
   return 0;
 }
 
@@ -769,7 +767,7 @@ static int DisaAsr(int op)
 
   if (usereg==0) count=((count-1)&7)+1; // because ccc=000 means 8
 
-  neoSprintf(DisaText,"%s%c.%c %c%d, d%d",
+  sprintf(DisaText,"%s%c.%c %c%d, d%d",
     AsrName[type], dir?'l':'r', Tasm[size],
     usereg?'d':'#', count, num);
   return 0;
@@ -785,7 +783,7 @@ static int DisaAsrEa(int op)
   dir =(op>>8)&1;
   DisaGetEa(eat,op&0x3f,size);
 
-  neoSprintf(DisaText,"%s%c.w %s", AsrName[type], dir?'l':'r', eat);
+  sprintf(DisaText,"%s%c.w %s", AsrName[type], dir?'l':'r', eat);
   return 0;
 }
 
